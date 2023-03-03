@@ -15,7 +15,7 @@ namespace Code
         #region Static 属性
 
         // 用正则取  [图集ID#表情Tag] ID值==-1 ,表示为超链接
-        private static readonly Regex _inputTagRegex = new Regex(@"\[(\-{0,1}\d{0,})#(.+?)\]", RegexOptions.Singleline);
+        private static readonly Regex _inputTagRegex = new Regex(@"\[(\-{0,1}\d{0,})#(.+?)#(.+?)\]", RegexOptions.Singleline);
 
         #endregion
 
@@ -103,37 +103,54 @@ namespace Code
 
         // 重写文本所占的长宽
         //文本的宽度计算好像有bug，超过sizeDelta就取sizeDelta
+
+        private float m_preferredWidth = -1;
+        [Obsolete("Emoji Text 文本宽 计算的方式变了，建议使用 GetPreferredWidth() 函数替代")]
         public override float preferredWidth
         {
             get
             {
-                var settings = GetGenerationSettings(Vector2.zero);
-                float width = cachedTextGeneratorForLayout.GetPreferredWidth(m_Text, settings) / pixelsPerUnit;
-                return width;
+                if (m_preferredWidth <= 0)
+                {
+                    return GetPreferredWidth();
+                }
+                return m_preferredWidth;
             }
         }
 
+        private float m_preferredHeight = -1;
+        [Obsolete("Emoji Text 文本高 计算的方式变了，建议使用 GetPreferredHeight() 函数替代")]
         public override float preferredHeight
         {
             get
             {
-                var settings = GetGenerationSettings(new Vector2(preferredWidth, 0.0f));
-                float height = cachedTextGeneratorForLayout.GetPreferredHeight(m_Text, settings) / pixelsPerUnit;
-                return height;
+                if (m_preferredHeight <= 0)
+                {
+                    return GetPreferredHeight(m_preferredWidth);
+                }
+
+                return m_preferredHeight;
             }
         }
 
         public float GetPreferredWidth()
         {
-            return preferredWidth;
+            var settings = GetGenerationSettings(Vector2.zero);
+            float width = cachedTextGeneratorForLayout.GetPreferredWidth(m_Text, settings) / pixelsPerUnit;
+            return width;
         }
-
+        /// <summary>
+        /// 指定文本的宽，获取文本高
+        /// </summary>
+        /// <param name="width"></param>
+        /// <returns></returns>
         public float GetPreferredHeight(float width = 0)
         {
             if (width <= 0) width = GetPreferredWidth();
+            m_preferredWidth = width;
             var settings = GetGenerationSettings(new Vector2(width, 0.0f));
-            float height = cachedTextGeneratorForLayout.GetPreferredHeight(m_Text, settings) / pixelsPerUnit;
-            return height;
+            m_preferredHeight = cachedTextGeneratorForLayout.GetPreferredHeight(m_Text, settings) / pixelsPerUnit;
+            return m_preferredHeight;
         }
 
         protected override void OnPopulateMesh(VertexHelper toFill)
@@ -466,7 +483,8 @@ namespace Code
             //preferred size
             Vector2 pivot = GetTextAnchorPivot(alignment);
             Rect rect = new Rect();
-            Vector2 size = rectTransform.sizeDelta - new Vector2(preferredWidth, preferredHeight);
+
+            Vector2 size = rectTransform.rect.size - new Vector2(preferredWidth, preferredHeight);
             rect.position = new Vector2(pivot.x * size.x, pivot.y * size.y) -
                             new Vector2(rectTransform.sizeDelta.x * rectTransform.pivot.x, rectTransform.sizeDelta.y * rectTransform.pivot.y);
             rect.width = preferredWidth;
