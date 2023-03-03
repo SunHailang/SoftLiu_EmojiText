@@ -31,9 +31,7 @@ namespace Code
                 }
                 else
                     _meshInfo = value;
-
                 SetAllDirty();
-                // SetVerticesDirty();
             }
         }
 

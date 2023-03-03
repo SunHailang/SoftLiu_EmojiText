@@ -9,15 +9,14 @@ namespace Code
     [ExecuteInEditMode]
     public class EmojiManager : MonoBehaviour
     {
-        public readonly Dictionary<int, Dictionary<string, SpriteInforGroup>> IndexSpriteInfo = new Dictionary<int, Dictionary<string, SpriteInforGroup>>();
+        public static readonly Dictionary<int, Dictionary<string, SpriteInforGroup>> IndexSpriteInfo = new Dictionary<int, Dictionary<string, SpriteInforGroup>>();
 
-        [SerializeField] private List<SpriteGraphic> _spriteList = new List<SpriteGraphic>();
-
-        //图集
+        [SerializeField] private List<SpriteGraphic> _spriteList = new List<SpriteGraphic>();  //图集
         private Dictionary<int, SpriteGraphic> _spriteGraphicDict = new Dictionary<int, SpriteGraphic>();
 
+        public Dictionary<int, SpriteGraphic> SpriteGraphicDict => _spriteGraphicDict;
         //渲染列表
-        List<int> _renderIndexs = new List<int>();
+        private Dictionary<int, MeshInfo> _renderMesh = new Dictionary<int, MeshInfo>();
 
         private void Awake()
         {
@@ -34,7 +33,7 @@ namespace Code
 
         void Initialize()
         {
-            SpriteGraphic[] _spriteGraphics = _spriteList.ToArray();// gameObject.GetComponentsInChildren<SpriteGraphic>();
+            SpriteGraphic[] _spriteGraphics = _spriteList.ToArray(); // gameObject.GetComponentsInChildren<SpriteGraphic>();
             if (_spriteGraphics == null || _spriteGraphics.Length <= 0) return;
             foreach (SpriteGraphic graphic in _spriteGraphics)
             {
@@ -50,13 +49,14 @@ namespace Code
                     spriteGroup = new Dictionary<string, SpriteInforGroup>();
                     foreach (SpriteInforGroup item in mSpriteAsset.ListSpriteGroup)
                     {
-                        if(item == null) continue;
-                        if ((!spriteGroup.TryGetValue(item.Tag, out SpriteInforGroup spriteInfoGroup) || spriteInfoGroup == null) 
+                        if (item == null) continue;
+                        if ((!spriteGroup.TryGetValue(item.Tag, out SpriteInforGroup spriteInfoGroup) || spriteInfoGroup == null)
                             && item.ListSpriteInfor != null && item.ListSpriteInfor.Count > 0)
                         {
                             spriteGroup[item.Tag] = item;
                         }
                     }
+
                     IndexSpriteInfo[mSpriteAsset.Id] = spriteGroup;
                 }
             }
@@ -64,39 +64,30 @@ namespace Code
 
         private void Update()
         {
-            if (_spriteGraphicDict.Count > 0 && _renderIndexs != null && _renderIndexs.Count > 0)
+            foreach (KeyValuePair<int, MeshInfo> meshData in _renderMesh)
             {
-                for (int i = 0; i < _renderIndexs.Count; i++)
+                if (!_spriteGraphicDict.TryGetValue(meshData.Key, out SpriteGraphic spriteGraphic))
                 {
-                    int id = _renderIndexs[i];
-                    if (!_spriteGraphicDict.TryGetValue(id, out SpriteGraphic spriteGraphic))
-                    {
-                        continue;
-                    }
-
-                    if (spriteGraphic == null)
-                    {
-                        _spriteGraphicDict.Remove(id);
-                    }
-
-                    MeshInfo meshInfo = Utils.Pool<MeshInfo>.Get();
-                    meshInfo.Reset();
-                    if(spriteGraphic.MeshInfo != null)
-                    {
-                        if (spriteGraphic.MeshInfo.visable)
-                        {
-                            meshInfo.Vertices.AddRange(spriteGraphic.MeshInfo.Vertices);
-                            meshInfo.UVs.AddRange(spriteGraphic.MeshInfo.UVs);
-                            meshInfo.Colors.AddRange(spriteGraphic.MeshInfo.Colors);
-                        }
-                        Utils.Pool<MeshInfo>.Release(spriteGraphic.MeshInfo);
-                    }
-                    spriteGraphic.MeshInfo = meshInfo;
+                    continue;
+                }
+        
+                if (spriteGraphic == null)
+                {
+                    _spriteGraphicDict.Remove(meshData.Key);
+                    return;
                 }
 
-                //清掉渲染索引
-                _renderIndexs.Clear();
+                if (spriteGraphic.MeshInfo != null)
+                {
+                    Utils.Pool<MeshInfo>.Release(spriteGraphic.MeshInfo);
+                }
+                if (meshData.Value.visable)
+                {
+                    spriteGraphic.MeshInfo = meshData.Value;
+                }
             }
+            //清掉渲染索引
+            _renderMesh.Clear();
         }
 
         //更新Text文本信息
@@ -111,36 +102,31 @@ namespace Code
             }
             else
             {
-                if (!_spriteGraphicDict.TryGetValue(id, out SpriteGraphic spriteGraphic) || spriteGraphic == null)
+                if (!_spriteGraphicDict.TryGetValue(id, out SpriteGraphic spriteGraphic))
                 {
-                    Initialize();
                     return;
                 }
 
-                if (spriteGraphic.MeshInfo == null)
+                if (spriteGraphic == null)
                 {
-                    spriteGraphic.MeshInfo = Utils.Pool<MeshInfo>.Get();
+                    _spriteGraphicDict.Remove(id);
+                    return;
                 }
-
-                spriteGraphic.MeshInfo.Reset();
-                spriteGraphic.MeshInfo.visable = visable;
+                
+                MeshInfo meshInfo = Utils.Pool<MeshInfo>.Get();
+                meshInfo.Reset();
+                meshInfo.visable = visable;
                 for (int i = 0; i < value.Count; i++)
                 {
                     for (int j = 0; j < value[i].Pos.Length; j++)
                     {
                         //世界转本地坐标->避免位置变换的错位
-                        spriteGraphic.MeshInfo.Vertices.Add(Utils.Utility.TransformWorld2Point(spriteGraphic.transform, value[i].Pos[j]));
+                        meshInfo.Vertices.Add(Utils.Utility.TransformWorld2Point(spriteGraphic.transform, value[i].Pos[j]));
                     }
-
-                    spriteGraphic.MeshInfo.UVs.AddRange(value[i].UVs);
-                    spriteGraphic.MeshInfo.Colors.Add(value[i].ColorData);
+                    meshInfo.UVs.AddRange(value[i].UVs);
+                    meshInfo.Colors.Add(value[i].ColorData);
                 }
-            }
-
-            //添加到渲染列表里面  --  等待下一帧渲染
-            if (!_renderIndexs.Contains(id))
-            {
-                _renderIndexs.Add(id);
+                _renderMesh[id] = meshInfo;
             }
         }
     }

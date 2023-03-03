@@ -49,7 +49,7 @@ namespace Editor
             {
                 GUILayout.BeginHorizontal();
                 //纹理渲染--------------
-                _texScrollView = GUILayout.BeginScrollView(_texScrollView, "", GUILayout.Width(0.625f * Screen.width));
+                _texScrollView = GUILayout.BeginScrollView(_texScrollView, GUILayout.Width(0.625f * Screen.width));
                 GUILayout.Label(_sourceTex);
                 GUILayout.EndScrollView();
                 //参数设置---------------

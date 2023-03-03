@@ -1,5 +1,71 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &661494184341198121
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3605104007710554565}
+  - component: {fileID: 8390475165710776975}
+  - component: {fileID: 7588654406818266756}
+  m_Layer: 5
+  m_Name: SpriteGraphic1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3605104007710554565
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661494184341198121}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3653153367312095206}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8390475165710776975
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661494184341198121}
+  m_CullTransparentMesh: 1
+--- !u!114 &7588654406818266756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661494184341198121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f2b342d86474e2aabdf5cd955d44920, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_spriteAsset: {fileID: 11400000, guid: 8620fd38c708903488f26b0322456a9d, type: 2}
 --- !u!1 &2558743449552993111
 GameObject:
   m_ObjectHideFlags: 0
@@ -31,14 +97,15 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2401218370886926377}
+  - {fileID: 3605104007710554565}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 302.2, y: 36}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 800, y: -350}
+  m_SizeDelta: {x: 575, y: 380}
+  m_Pivot: {x: 0, y: 1}
 --- !u!222 &5820356010230037432
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -80,13 +147,21 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Hello World [#emoji_10]
+  m_Text: 'Hello World [0#emoji_19][1#emoji_2]111145645645
+
+    6456[1#emoji_3]4564564564564[0#emoji_35]56456456
+
+    456456456[0#emoji_38]456456456'
   _inlineManager: {fileID: 3179100913218771293}
   OnHrefClick:
     m_PersistentCalls:
       m_Calls: []
   m_emojiSpriteList: []
-  _text: Hello World [#emoji_10]
+  _text: 'Hello World [0#emoji_19][1#emoji_2]111145645645
+
+    6456[1#emoji_3]4564564564564[0#emoji_35]56456456
+
+    456456456[0#emoji_38]456456456'
 --- !u!114 &3179100913218771293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,6 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteList:
   - {fileID: 3179100913218771292}
+  - {fileID: 7588654406818266756}
 --- !u!1 &5240845289070068817
 GameObject:
   m_ObjectHideFlags: 0

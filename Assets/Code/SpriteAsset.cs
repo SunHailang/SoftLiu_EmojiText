@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 namespace Code
 {
@@ -10,26 +11,37 @@ namespace Code
         /// 图集ID
         /// </summary>
         public int Id;
+
+        /// <summary>
+        /// 遵循自己的大小不受字体大小控制
+        /// </summary>
+        public bool IsSelfSize = false;
+
         /// <summary>
         /// 静态表情
         /// </summary>
         public bool IsStatic;
+
         /// <summary>
         /// 图片资源
         /// </summary>
         public Texture TexSource;
+
         /// <summary>
         /// 行
         /// </summary>
         public int Row;
+
         /// <summary>
         /// 列
         /// </summary>
         public int Column;
+
         /// <summary>
         /// 动态表情的切换速度
         /// </summary>
         public float Speed = 10;
+
         /// <summary>
         /// 所有sprite信息 SpriteAssetInfor类为具体的信息类
         /// </summary>
@@ -45,6 +57,7 @@ namespace Code
                     return true;
                 }
             }
+
             group = null;
             return false;
         }
@@ -57,6 +70,7 @@ namespace Code
         /// ID
         /// </summary>
         public int Id;
+
         ///// <summary>
         ///// 名称
         ///// </summary>
@@ -95,6 +109,6 @@ namespace Code
         public string Tag = "";
         public List<SpriteInfor> ListSpriteInfor = new List<SpriteInfor>();
         public float Width = 1.0f;
-        public float Size = 32.0f;
+        public int Size = 32;
     }
 }

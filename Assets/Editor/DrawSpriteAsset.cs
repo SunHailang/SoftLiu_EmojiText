@@ -45,6 +45,8 @@ namespace Editor
                 GUILayout.EndHorizontal();
                 //是否为静态表情
                 GUILayout.BeginHorizontal();
+                _spriteAsset.IsSelfSize = GUILayout.Toggle(_spriteAsset.IsSelfSize, "是否为自身大小，不受字体大小控制？");
+                
                 bool isStatic = GUILayout.Toggle(_spriteAsset.IsStatic, "是否为静态表情?");
                 if (isStatic != _spriteAsset.IsStatic)
                 {
@@ -103,7 +105,7 @@ namespace Editor
                         GUILayout.Label("Tag:");
                         inforGroups[i].Tag = EditorGUILayout.TextField(inforGroups[i].Tag);
                         GUILayout.Label("Size:");
-                        inforGroups[i].Size = EditorGUILayout.FloatField(inforGroups[i].Size);
+                        inforGroups[i].Size = EditorGUILayout.IntField(inforGroups[i].Size);
                         GUILayout.Label("Width:");
                         inforGroups[i].Width = EditorGUILayout.FloatField(inforGroups[i].Width);
                         GUILayout.EndHorizontal();
@@ -191,6 +193,7 @@ namespace Editor
                                 Code.SpriteInfor infor = GetSpriteInfo(index, i, j, size, texSize);
 
                                 inforGroup.Tag = "emoji_" + infor.Id;
+                                inforGroup.Size = (int) size.x;
                                 inforGroup.ListSpriteInfor.Add(infor);
                                 _spriteAsset.ListSpriteGroup.Add(inforGroup);
                             }
@@ -203,6 +206,7 @@ namespace Editor
                         {
                             Code.SpriteInforGroup inforGroup = Code.Utils.Pool<Code.SpriteInforGroup>.Get();
                             inforGroup.Tag = "emoji_" + (index + 1);
+                            inforGroup.Size = (int) size.x;
                             for (int j = 0; j < _spriteAsset.Column; j++)
                             {
                                 index++;

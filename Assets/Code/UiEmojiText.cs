@@ -98,6 +98,7 @@ namespace Code
             {
                 _inlineManager = GetComponent<EmojiManager>();
             }
+            SetAllDirty();
         }
 
         // 重写文本所占的长宽
@@ -202,24 +203,26 @@ namespace Code
                 //更新表情
                 else
                 {
-                    if (_inlineManager == null || !_inlineManager.IndexSpriteInfo.TryGetValue(tempId, out Dictionary<string, SpriteInforGroup> _indexSpriteInfo)
+                    if (_inlineManager == null || !EmojiManager.IndexSpriteInfo.TryGetValue(tempId, out Dictionary<string, SpriteInforGroup> _indexSpriteInfo)
                                                || !_indexSpriteInfo.TryGetValue(tempTag, out SpriteInforGroup tempGroup))
                         continue;
-
-                    //SpriteInforGroup tempGroup = new SpriteInforGroup();
-
+                    if (!_inlineManager.SpriteGraphicDict.TryGetValue(tempId, out SpriteGraphic graphic) || graphic == null)
+                    {
+                        continue;
+                    }
                     part = inputText.Substring(textIndex, match.Index - textIndex);
                     _textBuilder.Append(part);
                     int tempIndex = _textBuilder.Length * 4;
                     newIndex += ReplaceRichText(part).Length * 4;
-                    _textBuilder.Append(@"<quad size=" + tempGroup.Size + " width=" + tempGroup.Width + " />");
+                    int emojiSize = graphic.m_spriteAsset.IsSelfSize ? tempGroup.Size : this.fontSize;
+                    _textBuilder.Append(@"<quad size=" + emojiSize  + " width=" + tempGroup.Width + " />");
 
                     //清理标签
                     SpriteTagInfo tempSpriteTag = Utils.Pool<SpriteTagInfo>.Get();
                     tempSpriteTag.NewIndex = newIndex;
                     tempSpriteTag.Id = tempId;
                     tempSpriteTag.Tag = tempTag;
-                    tempSpriteTag.Size = new Vector2(tempGroup.Size * tempGroup.Width, tempGroup.Size);
+                    tempSpriteTag.Size = new Vector2(emojiSize * tempGroup.Width, emojiSize);
                     tempSpriteTag.UVs = tempGroup.ListSpriteInfor[0].Uv;
                     tempSpriteTag.ColorData = new Color(1, 1, 1, color.a);
 
