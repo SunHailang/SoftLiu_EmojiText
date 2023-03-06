@@ -1,0 +1,16 @@
+{
+    "name": "Igg.EmojiText.Editor",
+    "rootNamespace": "",
+    "references": [
+        "Igg.EmojiText.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
