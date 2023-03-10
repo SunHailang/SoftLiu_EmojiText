@@ -7,12 +7,26 @@ public class LoopListViewItem : MonoBehaviour
     // indicates the item’s index in the list
     //if itemTotalCount is set -1, then the mItemIndex can be from –MaxInt to +MaxInt.
     //If itemTotalCount is set a value >=0 , then the mItemIndex can only be from 0 to itemTotalCount -1.
-    int mItemIndex = -1;
+    
 
+    int mItemIndexInPool = -1;
     public int ItemIndexInPool
     {
         get { return mItemIndex; }
         set { mItemIndex = value; }
+    }
+    
+    int mItemIndex = -1;
+    public int ItemIndex
+    {
+        get
+        {
+            return mItemIndex;
+        }
+        set
+        {
+            mItemIndex = value;
+        }
     }
     
     private float mPadding;
@@ -68,4 +82,133 @@ public class LoopListViewItem : MonoBehaviour
         get { return mStartPosOffset; }
         set { mStartPosOffset = value; }
     }
+    
+    float mDistanceWithViewPortSnapCenter = 0;
+    public float DistanceWithViewPortSnapCenter
+    {
+        get { return mDistanceWithViewPortSnapCenter; }
+        set { mDistanceWithViewPortSnapCenter = value; }
+    }
+    
+    private LoopListView mParentListView = null;
+    public LoopListView ParentListView
+    {
+        get
+        {
+            return mParentListView;
+        }
+        set
+        {
+            mParentListView = value;
+        }
+    }
+    private RectTransform mCachedRectTransform;
+    public RectTransform CachedRectTransform
+    {
+        get
+        {
+            if (mCachedRectTransform == null)
+            {
+                mCachedRectTransform = gameObject.GetComponent<RectTransform>();
+            }
+            return mCachedRectTransform;
+        }
+    }
+    public float ItemSize
+    {
+        get
+        {
+            if (ParentListView.IsVertList)
+            {
+                return  CachedRectTransform.rect.height;
+            }
+            else
+            {
+                return CachedRectTransform.rect.width;
+            }
+        }
+    }
+    
+    public float TopY
+    {
+        get
+        {
+            ListItemArrangeType arrageType = ParentListView.ArrangeType;
+            if (arrageType == ListItemArrangeType.TopToBottom)
+            {
+                return CachedRectTransform.anchoredPosition3D.y;
+            }
+            else if(arrageType == ListItemArrangeType.BottomToTop)
+            {
+                return CachedRectTransform.anchoredPosition3D.y + CachedRectTransform.rect.height;
+            }
+            return 0;
+        }
+    }
+
+    public float BottomY
+    {
+        get
+        {
+            ListItemArrangeType arrageType = ParentListView.ArrangeType;
+            if (arrageType == ListItemArrangeType.TopToBottom)
+            {
+                return CachedRectTransform.anchoredPosition3D.y - CachedRectTransform.rect.height;
+            }
+            else if (arrageType == ListItemArrangeType.BottomToTop)
+            {
+                return CachedRectTransform.anchoredPosition3D.y;
+            }
+            return 0;
+        }
+    }
+    
+    public float LeftX
+    {
+        get
+        {
+            ListItemArrangeType arrageType = ParentListView.ArrangeType;
+            if (arrageType == ListItemArrangeType.LeftToRight)
+            {
+                return CachedRectTransform.anchoredPosition3D.x;
+            }
+            else if (arrageType == ListItemArrangeType.RightToLeft)
+            {
+                return CachedRectTransform.anchoredPosition3D.x - CachedRectTransform.rect.width;
+            }
+            return 0;
+        }
+    }
+
+    public float RightX
+    {
+        get
+        {
+            ListItemArrangeType arrageType = ParentListView.ArrangeType;
+            if (arrageType == ListItemArrangeType.LeftToRight)
+            {
+                return CachedRectTransform.anchoredPosition3D.x + CachedRectTransform.rect.width;
+            }
+            else if (arrageType == ListItemArrangeType.RightToLeft)
+            {
+                return CachedRectTransform.anchoredPosition3D.x;
+            }
+            return 0;
+        }
+    }
+    public float ItemSizeWithPadding
+    {
+        get
+        {
+            return ItemSize + mPadding;
+        }
+    }
+    
+    int mItemCreatedCheckFrameCount = 0;
+    public int ItemCreatedCheckFrameCount
+    {
+        get { return mItemCreatedCheckFrameCount; }
+        set { mItemCreatedCheckFrameCount = value; }
+    }
+    
 }
