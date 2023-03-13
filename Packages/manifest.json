@@ -1,5 +1,15 @@
 {
+  "scopedRegistries": [
+    {
+      "name": "ILRuntime",
+      "url": "https://registry.npmjs.org",
+      "scopes": [
+        "com.ourpalm" 
+      ]
+    }
+  ],
   "dependencies": {
+    "com.ourpalm.ilruntime": "2.1.0",
     "com.igg.emojitext": "file:../LoacalPackages/com.igg.emojitext@0.0.1",
     "com.unity.collab-proxy": "1.15.4",
     "com.unity.ide.rider": "2.0.7",

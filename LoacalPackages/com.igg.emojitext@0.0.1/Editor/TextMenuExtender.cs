@@ -15,7 +15,7 @@ namespace igg.EmojiText.Editor
         {
             GameObject go = null;
             string prefab = Path.Combine(Application.dataPath, "../LoacalPackages/com.igg.emojitext@0.0.1/Tests/ResourcesRex/Prefab/UiEmojiText.prefab");
-            UiEmojiText text = AssetDatabase.LoadAssetAtPath<UiEmojiText>(prefab);
+            // UiEmojiText text = AssetDatabase.LoadAssetAtPath<UiEmojiText>(prefab);
             bool exists = File.Exists(prefab);
             if (exists)
             {

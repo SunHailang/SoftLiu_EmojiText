@@ -8,6 +8,13 @@
         "com.unity.ugui": "1.0.0"
       }
     },
+    "com.ourpalm.ilruntime": {
+      "version": "2.1.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://registry.npmjs.org"
+    },
     "com.unity.collab-proxy": {
       "version": "1.15.4",
       "depth": 0,
