@@ -98,6 +98,9 @@ namespace igg.EmojiText.Runtime
             {
                 _inlineManager = GetComponent<EmojiManager>();
             }
+
+            // string curText = text;
+            // this.text = curText;
             SetAllDirty();
         }
 

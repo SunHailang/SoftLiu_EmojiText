@@ -147,21 +147,13 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Hello World [0#emoji_19][1#emoji_2]111145645645
-
-    6456[1#emoji_3]4564564564564[0#emoji_35]56456456
-
-    456456456[0#emoji_38]456456456'
+  m_Text: "Hello World [0#emoji_19#emoji][1#emoji_2#emoji]111145645645\n6456[1#emoji_3#emoji]4564564564564[0#emoji_35#emoji]56456456\n456456456[0#emoji_38#emoji]4564<color=#0000FFFF>[\u6211\u662F\u8D85\u94FE\u63A5(ID:1)]</color>56456"
   _inlineManager: {fileID: 3179100913218771293}
   OnHrefClick:
     m_PersistentCalls:
       m_Calls: []
   m_emojiSpriteList: []
-  _text: 'Hello World [0#emoji_19][1#emoji_2]111145645645
-
-    6456[1#emoji_3]4564564564564[0#emoji_35]56456456
-
-    456456456[0#emoji_38]456456456'
+  _text: "Hello World [0#emoji_19#emoji][1#emoji_2#emoji]111145645645\n6456[1#emoji_3#emoji]4564564564564[0#emoji_35#emoji]56456456\n456456456[0#emoji_38#emoji]4564[-1#\u6211\u662F\u8D85\u94FE\u63A5(ID:1)#https://www.baidu.com]56456"
 --- !u!114 &3179100913218771293
 MonoBehaviour:
   m_ObjectHideFlags: 0
