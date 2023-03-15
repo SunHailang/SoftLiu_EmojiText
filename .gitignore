@@ -6,7 +6,6 @@
 [Bb]uilds/
 [Ll]ogs
 [Gg]enerated/
-*.[Gg]enerated.meta
 Assets/AssetStoreTools*
 
 
@@ -29,6 +28,8 @@ ExportedObj/
 *.svd
 *.pdb
 *.opendb
+
+[Gg]enerated.meta
 
 # Unity3D generated meta files
 *.pidb.meta
