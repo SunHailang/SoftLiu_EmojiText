@@ -28,7 +28,18 @@ public class ILRuntimeCLRBinding
     [MenuItem("ILRuntime/删除所有CLR绑定")]
     static void DeleteCLRBindins()
     {
-        System.IO.Directory.Delete("Assets/Scripts/ILRuntime/Generated", true);
+        string metaPath = "Assets/Scripts/ILRuntime/Generated.meta";
+        if (System.IO.File.Exists(metaPath))
+        {
+            System.IO.File.Delete(metaPath);
+        }
+
+        string dirPath = "Assets/Scripts/ILRuntime/Generated";
+        if (System.IO.Directory.Exists(dirPath))
+        {
+            System.IO.Directory.Delete(dirPath, true);
+        }
+
         AssetDatabase.Refresh();
     }
 
