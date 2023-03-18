@@ -9,5 +9,15 @@ namespace HotFix_Project
     public class GameController
     {
 
+        public void Initialization()
+        {
+            TimerManager.Instance.Initialization();
+        }
+
+        public void Release()
+        {
+            TimerManager.Instance.Release();
+        }
+
     }
 }
