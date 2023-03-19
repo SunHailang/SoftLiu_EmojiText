@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using igg.EmojiText.Runtime;
 using UnityEditor;
 using UnityEditor.UI;
 using UnityEngine;

@@ -1,13 +1,5 @@
 {
   "dependencies": {
-    "com.igg.emojitext": {
-      "version": "file:../LoacalPackages/com.igg.emojitext@0.0.1",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {
-        "com.unity.ugui": "1.0.0"
-      }
-    },
     "com.ourpalm.ilruntime": {
       "version": "2.1.0",
       "depth": 0,

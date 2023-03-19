@@ -9,12 +9,6 @@ using ILRuntime.CLR.Method;
 using ILRuntime.CLR.TypeSystem;
 using ILRuntime.Runtime.Stack;
 
-#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
-using AutoList = System.Collections.Generic.List<object>;
-#else
-using AutoList = ILRuntime.Other.UncheckedList<object>;
-#endif
-
 public unsafe class QuaternionBinder : ValueTypeBinder<Quaternion>
 {
     Vector3Binder vector3Binder;
@@ -113,14 +107,14 @@ public unsafe class QuaternionBinder : ValueTypeBinder<Quaternion>
         appdomain.RegisterCLRMethodRedirection(method, Get_Identity);
     }
 
-    StackObject* Quaternion_Multiply(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Quaternion_Multiply(ILIntepreter intp, StackObject* esp, IList<object> mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 2);
         Quaternion left, right;
 
         var ptr = ILIntepreter.Minus(esp, 1);
         ParseQuaternion(out right, intp, ptr, mStack);
-
+        
         ptr = ILIntepreter.Minus(esp, 2);
         ParseQuaternion(out left, intp, ptr, mStack);
 
@@ -130,7 +124,7 @@ public unsafe class QuaternionBinder : ValueTypeBinder<Quaternion>
         return ret + 1;
     }
 
-    StackObject* Quaternion_Multiply2(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Quaternion_Multiply2(ILIntepreter intp, StackObject* esp, IList<object> mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 2);
         Vector3 vec;
@@ -148,7 +142,7 @@ public unsafe class QuaternionBinder : ValueTypeBinder<Quaternion>
         return ret + 1;
     }
 
-    StackObject* Quaternion_Equality(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Quaternion_Equality(ILIntepreter intp, StackObject* esp, IList<object> mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 2);
         var ptr = ILIntepreter.Minus(esp, 1);
@@ -166,7 +160,7 @@ public unsafe class QuaternionBinder : ValueTypeBinder<Quaternion>
         return ret + 1;
     }
 
-    StackObject* Quaternion_Inequality(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Quaternion_Inequality(ILIntepreter intp, StackObject* esp, IList<object> mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 2);
         var ptr = ILIntepreter.Minus(esp, 1);
@@ -184,7 +178,7 @@ public unsafe class QuaternionBinder : ValueTypeBinder<Quaternion>
         return ret + 1;
     }
 
-    StackObject* Quaternion_Dot(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Quaternion_Dot(ILIntepreter intp, StackObject* esp, IList<object> mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 2);
         var ptr = ILIntepreter.Minus(esp, 1);
@@ -202,7 +196,7 @@ public unsafe class QuaternionBinder : ValueTypeBinder<Quaternion>
         return ret + 1;
     }
 
-    StackObject* Quaternion_Angle(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Quaternion_Angle(ILIntepreter intp, StackObject* esp, IList<object> mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 2);
         var ptr = ILIntepreter.Minus(esp, 1);
@@ -220,7 +214,7 @@ public unsafe class QuaternionBinder : ValueTypeBinder<Quaternion>
         return ret + 1;
     }
 
-    StackObject* Quaternion_Euler(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Quaternion_Euler(ILIntepreter intp, StackObject* esp, IList<object> mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 1);
         var ptr = ILIntepreter.Minus(esp, 1);
@@ -254,7 +248,7 @@ public unsafe class QuaternionBinder : ValueTypeBinder<Quaternion>
         return ret + 1;
     }
 
-    StackObject* Quaternion_Slerp(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Quaternion_Slerp(ILIntepreter intp, StackObject* esp, IList<object> mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 3);
         Quaternion left, right;
@@ -316,7 +310,7 @@ public unsafe class QuaternionBinder : ValueTypeBinder<Quaternion>
         return ret;
     }
 
-    StackObject* Get_EulerAngle(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Get_EulerAngle(ILIntepreter intp, StackObject* esp, IList<object> mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 1);
 
@@ -339,7 +333,7 @@ public unsafe class QuaternionBinder : ValueTypeBinder<Quaternion>
         return ret + 1;
     }
 
-    static void ParseQuaternion(out Quaternion vec, ILIntepreter intp, StackObject* ptr, List<object> mStack)
+    static void ParseQuaternion(out Quaternion vec, ILIntepreter intp, StackObject* ptr, IList<object> mStack)
     {
         var a = ILIntepreter.GetObjectAndResolveReference(ptr);
         if (a->ObjectType == ObjectTypes.ValueTypeObjectReference)
@@ -365,7 +359,7 @@ public unsafe class QuaternionBinder : ValueTypeBinder<Quaternion>
         CopyValueTypeToStack(ref vec, dst, mStack);
     }
 
-    void PushVector3(ref Vector3 vec, ILIntepreter intp, StackObject* ptr, AutoList mStack)
+    void PushVector3(ref Vector3 vec, ILIntepreter intp, StackObject* ptr, IList<object> mStack)
     {
         var binder = Vector3Binder;
         if (binder != null)
