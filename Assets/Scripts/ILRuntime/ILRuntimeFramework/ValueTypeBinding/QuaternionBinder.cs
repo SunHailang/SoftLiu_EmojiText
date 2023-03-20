@@ -9,6 +9,12 @@ using ILRuntime.CLR.Method;
 using ILRuntime.CLR.TypeSystem;
 using ILRuntime.Runtime.Stack;
 
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+using AutoList = System.Collections.Generic.List<object>;
+#else
+using AutoList = ILRuntime.Other.UncheckedList<object>;
+#endif
+
 public unsafe class QuaternionBinder : ValueTypeBinder<Quaternion>
 {
     Vector3Binder vector3Binder;
@@ -347,7 +353,7 @@ public unsafe class QuaternionBinder : ValueTypeBinder<Quaternion>
         }
         else
         {
-            vec = (Quaternion)StackObject.ToObject(a, intp.AppDomain, mStack);
+            vec = (Quaternion)StackObject.ToObject(a, intp.AppDomain, (AutoList)mStack);
             intp.Free(ptr);
         }
     }
@@ -365,6 +371,6 @@ public unsafe class QuaternionBinder : ValueTypeBinder<Quaternion>
         if (binder != null)
             binder.PushVector3(ref vec, intp, ptr, mStack);
         else
-            ILIntepreter.PushObject(ptr, mStack, vec, true);
+            ILIntepreter.PushObject(ptr, (AutoList)mStack, vec, true);
     }
 }

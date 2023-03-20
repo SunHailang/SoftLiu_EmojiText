@@ -7,7 +7,11 @@ using ILRuntime.Runtime.Enviorment;
 using ILRuntime.Runtime.Intepreter;
 using ILRuntime.CLR.Method;
 using ILRuntime.Runtime.Stack;
-
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+using AutoList = System.Collections.Generic.List<object>;
+#else
+using AutoList = ILRuntime.Other.UncheckedList<object>;
+#endif
 public unsafe class Vector3Binder : ValueTypeBinder<Vector3>
 {
     public override unsafe void AssignFromStack(ref Vector3 ins, StackObject* ptr, IList<object> mStack)
@@ -540,7 +544,7 @@ public unsafe class Vector3Binder : ValueTypeBinder<Vector3>
         }
         else
         {
-            vec = (Vector3)StackObject.ToObject(a, intp.AppDomain, mStack);
+            vec = (Vector3)StackObject.ToObject(a, intp.AppDomain, (AutoList)mStack);
             intp.Free(ptr);
         }
     }

@@ -569,3 +569,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12ba02dbd6f02454eb4684c3bc04cb40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_text: {fileID: 760255922}
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2295788
+      value: 1.1429454
+      inSlope: 0.016317284
+      outSlope: 0.016317284
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.47363636
+    - serializedVersion: 3
+      time: 0.33792657
+      value: 0.10455942
+      inSlope: -14.93336
+      outSlope: -14.93336
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.06385516
+    - serializedVersion: 3
+      time: 0.6136068
+      value: 1.0494273
+      inSlope: 1.8353331
+      outSlope: 1.8353331
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.061223958
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
