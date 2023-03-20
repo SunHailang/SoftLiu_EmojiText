@@ -183,10 +183,7 @@ public static class AssetBundleMenu
                 data = new VersionData();
             }
 
-            if (data.version <= 0)
-            {
-                data.version = 1;
-            }
+            data.version += 1;
 
             if (data.assetBundleMd5List == null)
             {
@@ -204,10 +201,10 @@ public static class AssetBundleMenu
 
             jsonText = LitJson.JsonMapper.ToJson(data);
             buffer = System.Text.Encoding.UTF8.GetBytes(jsonText);
-            
+
             fs.Seek(0, SeekOrigin.Begin);
             fs.SetLength(0);
-            
+
             fs.Write(buffer, 0, buffer.Length);
             fs.Flush();
         }
