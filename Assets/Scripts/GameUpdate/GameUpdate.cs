@@ -16,8 +16,10 @@ public class GameUpdate : MonoBehaviour
         
         // 对差异化的文件进行下载
         
-        // 下载完成 进入游戏
+        // 下载完成 
         yield return null;
+        // 加载ILRuntime
+        HotFixMgr.Instance.Init();
     }
     
 }
