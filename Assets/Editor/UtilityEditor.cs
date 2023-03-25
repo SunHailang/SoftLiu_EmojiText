@@ -1,11 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-using System.IO;
 
-public static class UtiliityEditor
+public static class UtilityEditor
 {
     /// <summary>
     /// 跟据文件全路径 获取Assets文件下的路径
@@ -21,5 +16,5 @@ public static class UtiliityEditor
         }
         return fullPath;
     }
-    
+
 }

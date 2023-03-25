@@ -2,9 +2,18 @@
 
 public enum BuildStepType
 {
-    Pre, //  Executed before player
-    Post, //  Executed after player
-    Direct //  Used only for player building (not executed in manual builds)
+    /// <summary>
+    /// Executed before player
+    /// </summary>
+    Pre,
+    /// <summary>
+    /// Used only for player building (not executed in manual builds)
+    /// </summary>
+    Direct,
+    /// <summary>
+    /// Executed after player
+    /// </summary>
+    Post,
 }
 
 public interface IBuildStep

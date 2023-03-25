@@ -10,6 +10,7 @@
   ],
   "dependencies": {
     "com.ourpalm.ilruntime": "2.1.0",
+    "com.unity.2d.sprite": "1.0.0",
     "com.unity.assetbundlebrowser": "https://github.com/Unity-Technologies/AssetBundles-Browser.git",
     "com.unity.collab-proxy": "1.15.4",
     "com.unity.ide.rider": "2.0.7",

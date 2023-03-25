@@ -686,8 +686,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     7: UNICOM_DEBUG
   additionalCompilerArguments:
-    7:
-    - UNICOM_DEBUG
+    7: []
   platformArchitecture: {}
   scriptingBackend:
     Android: 1

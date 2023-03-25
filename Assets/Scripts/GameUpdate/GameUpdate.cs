@@ -1,14 +1,23 @@
 using System.Collections;
+using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameUpdate : MonoBehaviour
 {
     [SerializeField] private GameUpdateSlider m_updateSlider = null;
-    
-    // Start is called before the first frame update
+    [SerializeField] private Text m_pathText = null;
     private  IEnumerator Start()
     {
+        string persistentDataPath = Application.persistentDataPath;
+        m_pathText.text = $"[PersistentDataPath]:{persistentDataPath}";
+
+        string TargetName = "PC";
+        
+        
         // 读取本地版本文件
+        string datasPath = Path.Combine(persistentDataPath, "Res/Datas/");
+        
         m_updateSlider.SetSliderProgress(0);
         // 下载服务器版本文件
         
