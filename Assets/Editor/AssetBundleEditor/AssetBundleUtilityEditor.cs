@@ -24,11 +24,11 @@ public static class AssetBundleUtilityEditor
         switch (buildTarget)
         {
             case BuildTarget.Android:
-                return Path.Combine(path, "Android/");
+                return Path.Combine(path, "Android/AssetBundle/");
             case BuildTarget.iOS:
-                return Path.Combine(path, "iOS/");
+                return Path.Combine(path, "iOS/AssetBundle/");
         }
 
-        return Path.Combine(path, "PC/");
+        return Path.Combine(path, "PC/AssetBundle/");
     }
 }

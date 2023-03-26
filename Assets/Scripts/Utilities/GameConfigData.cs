@@ -25,12 +25,12 @@ public static class GameConfigData
     public static string GetPlatformResRootPath()
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
-        return Path.Combine(Application.persistentDataPath, $"Res/{GetPlatformName()}/");
+        return Path.Combine(Application.persistentDataPath, $"Res/{GetPlatformName()}");
 #elif UNITY_IPHONE && !UNITY_EDITOR
-        return Path.Combine(Application.persistentDataPath, $"Res/{GetPlatformName()}/");
+        return Path.Combine(Application.persistentDataPath, $"Res/{GetPlatformName()}");
 #else
         // 在Editor模式下 可以支持 本地资源加载 和 AssetBundle资源加载
-        return Path.Combine(Application.persistentDataPath, $"Res/{GetPlatformName()}/");
+        return Path.Combine(Application.dataPath, $"../HotFixRes/Res/{GetPlatformName()}");
 #endif
     }
 }

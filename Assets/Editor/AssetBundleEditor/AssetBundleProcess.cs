@@ -14,6 +14,7 @@ namespace AssetBundleEditor
             m_assetSteps.Add(new AssetLabelStep());
             m_assetSteps.Add(new AssetBuildStep());
             m_assetSteps.Add(new AssetVersionStep());
+            m_assetSteps.Add(new AssetDatasStep());
         }
 
 

@@ -37,10 +37,16 @@ namespace AssetBundleEditor
         private static void BuildAssetBundles(BuildTarget target)
         {
             string output = AssetBundleUtilityEditor.GetBuildAssetBundlePath(target, AssetBundleUtilityEditor.AssetBundleRootPath);
+            DirectoryInfo outDir = null;
             if (!Directory.Exists(output))
             {
-                Directory.CreateDirectory(output);
+                outDir = Directory.CreateDirectory(output);
             }
+            else
+            {
+                outDir = new DirectoryInfo(output);
+            }
+            output = outDir.FullName.Replace('\\', '/');
             AssetBundleProcess.Excute(output, target);
         }
        
