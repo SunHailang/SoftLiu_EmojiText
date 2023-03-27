@@ -684,7 +684,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    7: UNICOM_DEBUG
+    7: UNICOM_DEBUG;DISABLE_ILRUNTIME_DEBUG
   additionalCompilerArguments:
     7: []
   platformArchitecture: {}

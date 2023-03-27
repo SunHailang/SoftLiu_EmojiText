@@ -12,6 +12,7 @@ namespace HotFix_Project
 
         private LinkedList<Timer> m_timerLinkList = new LinkedList<Timer>();
 
+
         public void Initialization()
         {
             m_timerLinkList.Clear();
@@ -33,6 +34,14 @@ namespace HotFix_Project
 
         public void Release()
         {
+            IEnumerator<Timer> timers = m_timerLinkList.GetEnumerator();
+            while (timers.MoveNext())
+            {
+                if (timers.Current != null)
+                {
+                    timers.Current.Dispose();
+                }
+            }
             m_timerLinkList.Clear();
         }
 

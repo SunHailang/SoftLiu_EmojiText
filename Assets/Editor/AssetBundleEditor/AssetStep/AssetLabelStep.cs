@@ -9,7 +9,7 @@ namespace AssetBundleEditor
 {
     public class AssetLabelStep : IAssetStep
     {
-        private static string m_assetbundlePackageFolder = "AssetBundlePackage";
+        // private static string m_assetbundlePackageFolder = "AssetBundlePackage";
         private static string m_assetbundlePackageRootPath = Path.Combine(Application.dataPath, "AssetBundlePackage/");
 
 
@@ -123,7 +123,6 @@ namespace AssetBundleEditor
             if (assetLabelList == null || string.IsNullOrEmpty(output)) return;
             // 1. 读取已存在的版本文件 version.bytes
             string versionPath = Path.Combine(output, "version.bytes");
-            uint abVersion = 0;
             // 2. 解析版本文件 版本号 +1
             using (FileStream fs = new FileStream(versionPath, FileMode.OpenOrCreate))
             {

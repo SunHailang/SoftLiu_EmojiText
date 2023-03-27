@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace HotFix_Project
 {
-    public class Timer
+    public class Timer : System.IDisposable
     {
-        private string m_name = "";
+        protected string m_name = "";
         public string Name => m_name;
 
-        private bool m_isPause = false;
+        protected bool m_isPause = false;
         public bool IsPause => m_isPause;
+
+        public event System.Action onCallback;
 
         public Timer(string _name)
         {
@@ -22,6 +20,7 @@ namespace HotFix_Project
         public virtual void Process(float deltaTime)
         {
             if (IsPause) return;
+            onCallback?.Invoke();
         }
 
         public virtual void Start()
@@ -33,5 +32,31 @@ namespace HotFix_Project
         {
             m_isPause = true;
         }
+        #region 资源释放
+        private bool m_isDisposed = false;
+        public void Dispose()
+        {
+            m_name = "";
+            m_isPause = true;
+            onCallback = null;
+            this.Dispose(true);
+            // 调用SuppressFinalize()方法就意味着垃圾会后期认为这个对象根本没有析构函数
+            System.GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(!m_isDisposed)
+            {
+                if(disposing)
+                {
+                    // 清理托管资源对象
+                }
+                // 清理非托管资源对象
+
+                m_isDisposed = true;
+            }
+        }
+        #endregion
     }
 }

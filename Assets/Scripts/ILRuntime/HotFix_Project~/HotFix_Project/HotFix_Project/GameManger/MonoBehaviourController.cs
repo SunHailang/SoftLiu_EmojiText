@@ -23,7 +23,8 @@ namespace HotFix_Project
         public static void Start()
         {
             //Debug.Log("Start");
-
+            var proxy = ResourceLoaderCore.ResourceLoaderProxy.GetInstance();
+            Debug.Log(proxy.ToString());
         }
 
         public static void Update()

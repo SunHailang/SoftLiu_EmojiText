@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,7 +11,8 @@ public class ILRuntimeCLRBinding
     {
         //用新的分析热更dll调用引用来生成绑定代码
         ILRuntime.Runtime.Enviorment.AppDomain domain = new ILRuntime.Runtime.Enviorment.AppDomain();
-        using (System.IO.FileStream fs = new System.IO.FileStream("Assets/AssetBundlePackage/HotFixDLL/HotFix_Project.dll.bytes", System.IO.FileMode.Open, System.IO.FileAccess.Read))
+        string dllPath = Path.Combine(Application.dataPath, "../Datas/HotFix_Project/HotFix_Project.dll.bytes");
+        using (System.IO.FileStream fs = new System.IO.FileStream(dllPath, System.IO.FileMode.Open, System.IO.FileAccess.Read))
         {
             domain.LoadAssembly(fs);
 
