@@ -14,9 +14,12 @@ public class GameUpdate : MonoBehaviour
     private IEnumerator Start()
     {
         string persistentDataPath = GameConfigData.GetPlatformResRootPath();
+        
+        
         List<string> m_updateFile = null;
 
         // 读取本地版本文件
+        FileUtilities.IsExistsDirectory(persistentDataPath);
         string resVersionPath = Path.Combine(persistentDataPath, "ResVersion.bytes");
         if (!File.Exists(resVersionPath))
         {
@@ -34,6 +37,7 @@ public class GameUpdate : MonoBehaviour
         m_curResVersionText.text = $"当前资源版本号：{curResVersion}";
         
         // 读取 AssetBundle 资源版本号
+        FileUtilities.IsExistsDirectory(Path.Combine(persistentDataPath, "AssetBundle"));
         string assetVersionPath = Path.Combine(persistentDataPath, "AssetBundle/version.bytes");
         AssetBundleVersionData assetVersion = VersionUtilities.ReadVersionData<AssetBundleVersionData>(assetVersionPath);
         
@@ -43,7 +47,9 @@ public class GameUpdate : MonoBehaviour
         
         m_updateSlider.SetSliderProgress(0);
         // 下载服务器资源版本文件
-        //UnityWebRequest
+        yield return WebRequestManager.Instance.CreateDownloadFileRequest("ResVersion.bytes", persistentDataPath);
+        yield return WebRequestManager.Instance.CreateDownloadFileRequest("Datas/HotFix_Project/HotFix_Project.dll.bytes", persistentDataPath);
+        yield return WebRequestManager.Instance.CreateDownloadFileRequest("Datas/HotFix_Project/HotFix_Project.pdb.bytes", persistentDataPath);
         // 文件对比
 
         // 对差异化的文件进行下载
@@ -53,5 +59,7 @@ public class GameUpdate : MonoBehaviour
         // 加载ILRuntime
         HotFixMgr.Instance.Init();
     }
+
     
+
 }

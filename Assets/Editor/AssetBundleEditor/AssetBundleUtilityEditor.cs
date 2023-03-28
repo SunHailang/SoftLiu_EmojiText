@@ -9,7 +9,7 @@ using UnityEngine;
 **/
 public static class AssetBundleUtilityEditor
 {
-    public static readonly string AssetBundleRootPath = Path.Combine(Application.dataPath, "../HotFixRes/Res");
+    public static readonly string AssetBundleRootPath = Path.Combine(Application.dataPath, "../../SoftLiu_ServerIOCSharp/Out/Resources/HotFixRes/Res");
     public static readonly string AssetBundleRootFolder = "HotFixRes";
     
     
