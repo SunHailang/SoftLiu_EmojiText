@@ -55,17 +55,17 @@ public static class VersionUtilities
     }
 }
 
-public class AssetBundleMD5
+public class AssetInfoData
 {
     public string Path = "";
     public string MD5 = "";
     public int Size = 0;
 }
 
-public class AssetBundleVersionData
+public class AssetVersionData
 {
     public uint Version = 0;
-    public List<AssetBundleMD5> AssetBundleMd5List = null;
+    public List<AssetInfoData> AssetMd5List = null;
 }
 
 public class ResInfoData
@@ -78,8 +78,4 @@ public class ResVersionData
 {
     public uint Version = 0;
     public List<ResInfoData> ResInfoList = null;
-}
-
-public class DatasVersionData
-{
 }

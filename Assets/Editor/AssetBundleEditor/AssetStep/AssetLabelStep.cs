@@ -138,17 +138,17 @@ namespace AssetBundleEditor
                 }
 
                 var jsonText = System.Text.Encoding.UTF8.GetString(buffer);
-                var data = LitJson.JsonMapper.ToObject<AssetBundleVersionData>(jsonText);
-                if (data == null || data.AssetBundleMd5List == null) return;
+                var data = LitJson.JsonMapper.ToObject<AssetVersionData>(jsonText);
+                if (data == null || data.AssetMd5List == null) return;
                 string root = AssetBundleUtilityEditor.AssetBundleRootFolder;
                 int outIndex = output.IndexOf(root, StringComparison.Ordinal);
                 root = output.Substring(outIndex + root.Length);
-                for (int i = 0; i < data.AssetBundleMd5List.Count; i++)
+                for (int i = 0; i < data.AssetMd5List.Count; i++)
                 {
-                    if(data.AssetBundleMd5List[i].Path.EndsWith(".manifest")) continue;
+                    if(data.AssetMd5List[i].Path.EndsWith(".manifest")) continue;
                     // int index = data.AssetBundleMd5List[i].Path.IndexOf(root, StringComparison.Ordinal);
-                    if (root.Length >= data.AssetBundleMd5List[i].Path.Length) continue;
-                    string assetLabel = data.AssetBundleMd5List[i].Path.Substring(root.Length);
+                    if (root.Length >= data.AssetMd5List[i].Path.Length) continue;
+                    string assetLabel = data.AssetMd5List[i].Path.Substring(root.Length);
                     if (!assetLabelList.Contains(assetLabel))
                     {
                         // 删除这个文件

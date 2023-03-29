@@ -62,11 +62,14 @@ SpriteAtlas:
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
     - 7b0ddd95680fb9d4bb76071c7082174a: 21300000
+    - 57ff73ca685d4444288821c6bf40ac6d: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 7b0ddd95680fb9d4bb76071c7082174a, type: 3}
+  - {fileID: 21300000, guid: 57ff73ca685d4444288821c6bf40ac6d, type: 3}
   m_PackedSpriteNamesToIndex:
   - StartHoverSprite
+  - Img_Com_Loading
   m_RenderDataMap: {}
   m_Tag: GameController
   m_IsVariant: 0
