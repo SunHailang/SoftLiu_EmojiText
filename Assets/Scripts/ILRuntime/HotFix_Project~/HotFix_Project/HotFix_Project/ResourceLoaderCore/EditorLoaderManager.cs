@@ -10,10 +10,10 @@ namespace HotFix_Project.ResourceLoaderCore
 
         }
 
-        public override void LoadUiAssetAsync<T>(string assetName, System.Action<bool, T> callback)
+        public override System.Collections.IEnumerator LoadUiAssetAsync<T>(string assetName, System.Action<bool, T> callback)
         {
             string bundleName = "ui/logic/gamecontroller";
-            HotFixMonoBehaviour.Instance.DoCoroutine(LoadAssetAsync<T>(bundleName, assetName, callback));
+            yield return LoadAssetAsync<T>(bundleName, assetName, callback);
         }
     }
 }

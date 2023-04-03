@@ -13,7 +13,7 @@ namespace HotFix_Project.ResourceLoaderCore
 
         public bool IsNull()
         {
-            Debug.Log($"[AsyncAssetHandler] IsNull : {AssetBundleName}");
+            Debug.Log($"[AsyncAssetHandler] IsNull : {AssetBundleName}, {AssetBundleData == null}");
             return AssetBundleData == null;
         }
 

@@ -77,7 +77,7 @@ public static class FileUtilities
                         MD5 md5 = MD5.Create();
                         byte[] bytes = md5.ComputeHash(fs);
                         string fileMd5 = System.BitConverter.ToString(bytes).Replace("-", "").ToLower();
-                        string rootFolder = "HotFixRes";
+                        string rootFolder = "Res";
                         int index = file.FullName.LastIndexOf(rootFolder, StringComparison.Ordinal);
                         if (index < 0)
                         {
@@ -85,7 +85,7 @@ public static class FileUtilities
                             continue;
                         }
 
-                        index += rootFolder.Length + 1;
+                        //index += rootFolder.Length + 1;
                         if (index >= file.FullName.Length)
                         {
                             Debug.LogError($"[AssetVersionUpdate] Index:{index}, {file.FullName}");

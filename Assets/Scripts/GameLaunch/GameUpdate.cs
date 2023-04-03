@@ -17,7 +17,7 @@ public class GameUpdate : MonoBehaviour
         string persistentDataPath = GameConfigData.GetPlatformResRootPath();
 
 
-        List<string> m_updateFile = null;
+        //List<string> m_updateFile = null;
 
         // 读取本地版本文件
         FileUtilities.IsExistsDirectory(persistentDataPath);

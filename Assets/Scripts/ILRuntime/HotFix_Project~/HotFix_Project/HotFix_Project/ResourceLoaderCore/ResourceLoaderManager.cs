@@ -35,7 +35,7 @@ namespace HotFix_Project.ResourceLoaderCore
             Debug.Log($"4: {assetBundle == null}");
             m_assetBundleManifest = assetBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
             Debug.Log($"5: {m_assetBundleManifest == null}");
-            AsyncAssetHandler handle = ObjectPoolManager.Instance.GetPoolObject<AsyncAssetHandler>();
+            AsyncAssetHandler handle = ObjectPoolManager.Instance.GetPoolObject<AsyncAssetHandler>() as AsyncAssetHandler;
             Debug.Log($"6: {handle == null}");
             handle.Reset();
             handle.Count++;
@@ -49,19 +49,25 @@ namespace HotFix_Project.ResourceLoaderCore
             return m_curKeyID;
         }
 
-        public abstract void LoadUiAssetAsync<T>(string assetName, System.Action<bool, T> callback) where T : UnityEngine.Object;
+        public abstract System.Collections.IEnumerator LoadUiAssetAsync<T>(string assetName, System.Action<bool, T> callback) where T : UnityEngine.Object;
 
         protected System.Collections.IEnumerator LoadAssetAsync<T>(string bundleName, string name, System.Action<bool, T> callback) where T : UnityEngine.Object
         {
+            Debug.Log($"[LoadAssetAsync] : {bundleName}, {name}");
             m_checkBundleCycleDependencies.Clear();
             yield return LoadAssetDependencieAsync(bundleName);
             m_checkBundleCycleDependencies.Clear();
-
+            
             if (m_assetbundleLoadDict.TryGetValue(bundleName, out AsyncAssetHandler assetHandler) && assetHandler != null && !assetHandler.IsNull())
             {
-                var asset = assetHandler.AssetBundleData.LoadAssetAsync<T>(name);
-                yield return asset;
-                T obj = asset.asset as T;
+                AssetBundleRequest assetRequest = assetHandler.AssetBundleData.LoadAssetAsync<T>(name);
+                yield return assetRequest;
+                var assetObj = assetRequest.asset;
+                T obj = assetObj as T;
+
+                //T asset = assetHandler.AssetBundleData.LoadAsset<T>(name);
+                //T obj = asset;
+                
                 if (obj != null)
                 {
                     callback?.Invoke(true, obj);
@@ -83,6 +89,7 @@ namespace HotFix_Project.ResourceLoaderCore
             if (!m_checkBundleCycleDependencies.Add(bundleName))
             {
                 // AB包存在循环引用
+                Debug.Log($"[LoadAssetDependencieAsync] AB包存在循环引用 : {bundleName}");
                 yield break;
             }
             if (!m_assetbundleLoadDict.TryGetValue(bundleName, out AsyncAssetHandler assetHandler) || assetHandler == null || assetHandler.IsNull())
@@ -96,7 +103,7 @@ namespace HotFix_Project.ResourceLoaderCore
                 {
                     if (assetHandler == null)
                     {
-                        assetHandler = ObjectPoolManager.Instance.GetPoolObject<AsyncAssetHandler>();
+                        assetHandler = ObjectPoolManager.Instance.GetPoolObject<AsyncAssetHandler>() as AsyncAssetHandler;
                     }
                     assetHandler.Reset();
                     assetHandler.Count++;

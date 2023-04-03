@@ -8,6 +8,9 @@ namespace HotFix_Project.ResourceLoaderCore
 {
     public class ResourceLoaderProxy
     {
+        private static ResourceLoaderManager m_manager = null;
+        private static object _lock = new object();
+
         static ResourceLoaderProxy()
         {
 
@@ -15,11 +18,18 @@ namespace HotFix_Project.ResourceLoaderCore
 
         public static ResourceLoaderManager GetInstance()
         {
-//#if UNITY_EDITOR
-            return new EditorLoaderManager();
-//#else
-            //return new AssetBundleLoaderManager();
-//#endif
+            lock (_lock)
+            {
+                if (m_manager == null)
+                {
+#if UNITY_EDITOR
+                    m_manager = new EditorLoaderManager();
+#else
+                    m_manager = new AssetBundleLoaderManager();
+#endif
+                }
+                return m_manager;
+            }
         }
     }
 

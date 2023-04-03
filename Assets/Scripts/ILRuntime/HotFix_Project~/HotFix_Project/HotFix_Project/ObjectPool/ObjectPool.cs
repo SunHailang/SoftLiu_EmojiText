@@ -9,6 +9,11 @@ namespace HotFix_Project.ObjectPool
     public class ObjectPool : System.IDisposable
     {
 
+        public ObjectPool()
+        {
+
+        }
+
         public virtual void Reset()
         {
 

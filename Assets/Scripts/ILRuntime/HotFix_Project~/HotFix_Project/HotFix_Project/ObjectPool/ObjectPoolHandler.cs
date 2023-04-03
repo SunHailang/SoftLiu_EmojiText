@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HotFix_Project
 {
@@ -10,22 +7,22 @@ namespace HotFix_Project
     {
         private int m_maxCount = 0;
 
-        private List<T> m_curList = null;
+        private Stack<T> m_curList = null;
 
         public ObjectPoolHandler(int maxCount)
         {
             m_maxCount = maxCount;
-
-            m_curList = new List<T>(m_maxCount);
+            
+            m_curList = new Stack<T>(m_maxCount);
         }
 
-        public T GetPoolObject()
+        public T GetPoolObject() 
         {
             if (m_curList.Count > 0)
             {
-                return m_curList[m_curList.Count - 1];
+                return m_curList.Pop();
             }
-            return new T();
+            return null;
         }
 
         public void RecyclePoolObject(T obj)
@@ -36,7 +33,7 @@ namespace HotFix_Project
             }
             else
             {
-                m_curList.Add(obj);
+                m_curList.Push(obj);
             }
         }
 
@@ -45,17 +42,17 @@ namespace HotFix_Project
         {
             if (m_IsDispose)
             {
-                if (m_curList != null && m_curList.Count > 0)
+                if (m_curList != null)
                 {
-                    for (int i = 0; i < m_curList.Count; i++)
+                    while (m_curList.Count > 0)
                     {
-                        if (m_curList[i] != null)
+                        T obj = m_curList.Pop();
+                        if (obj != null)
                         {
-                            m_curList[i].Dispose();
+                            obj.Dispose();
                         }
                     }
                 }
-
                 m_IsDispose = true;
             }
             System.GC.SuppressFinalize(this);
