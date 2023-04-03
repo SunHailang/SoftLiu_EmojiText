@@ -78,6 +78,7 @@ namespace AssetBundleEditor
                 // 更新 ResVersion.bytes 资源版本号
                 AssetBundleUtilityEditor.UpdateAssetResVersion(output, "Datas", datasVersion);
             }
+            Debug.Log($"[CopyDatasToRes] Origin:{originPath} To Target:{output} Complete.");
         }
     }
 }

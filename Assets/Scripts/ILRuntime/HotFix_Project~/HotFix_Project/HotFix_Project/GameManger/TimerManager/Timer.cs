@@ -1,8 +1,8 @@
 ﻿
 
-namespace HotFix_Project
+namespace HotFix_Project.Timer
 {
-    public class Timer : System.IDisposable
+    public abstract class Timer : System.IDisposable
     {
         protected string m_name = "";
         public string Name => m_name;
@@ -10,28 +10,19 @@ namespace HotFix_Project
         protected bool m_isPause = false;
         public bool IsPause => m_isPause;
 
-        public event System.Action onCallback;
+        public System.Action onCallback;
 
         public Timer(string _name)
         {
             m_name = _name;
         }
 
-        public virtual void Process(float deltaTime)
-        {
-            if (IsPause) return;
-            onCallback?.Invoke();
-        }
+        public abstract void Process(float deltaTime);
 
-        public virtual void Start()
-        {
-            m_isPause = false;
-        }
+        public abstract void Start();
 
-        public virtual void Pause()
-        {
-            m_isPause = true;
-        }
+        public abstract void Pause();
+
         #region 资源释放
         private bool m_isDisposed = false;
         public void Dispose()
@@ -39,24 +30,45 @@ namespace HotFix_Project
             m_name = "";
             m_isPause = true;
             onCallback = null;
-            this.Dispose(true);
+            Dispose(true);
             // 调用SuppressFinalize()方法就意味着垃圾会后期认为这个对象根本没有析构函数
             System.GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool isDisposing)
         {
-            if(!m_isDisposed)
+            if (!m_isDisposed)
             {
-                if(disposing)
+                if (isDisposing)
                 {
                     // 清理托管资源对象
+                    DisposeManagedResources();
                 }
                 // 清理非托管资源对象
-
+                DisposeUnManagedResources();
                 m_isDisposed = true;
             }
         }
+        /// <summary>
+        /// 清理托管资源
+        /// </summary>
+        protected virtual void DisposeManagedResources()
+        {
+
+        }
+        /// <summary>
+        /// 清理非托管资源
+        /// </summary>
+        protected virtual void DisposeUnManagedResources()
+        {
+
+        }
+
+        ~Timer()
+        {
+            Dispose(false);
+        }
+
         #endregion
     }
 }

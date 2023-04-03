@@ -84,6 +84,12 @@ public class GameUpdate : MonoBehaviour
         yield return null;
         GC.Collect();
         // 加载ILRuntime
-        HotFixMgr.Instance.Init();
+        yield return HotFixMgr.Instance.LoadHotFixAssembly();
+    }
+
+
+    public void Btn_OnClick()
+    {
+        HotFixMonoBehaviour.Instance.Init();
     }
 }

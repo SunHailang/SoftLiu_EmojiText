@@ -718,7 +718,7 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: UNICOM_DEBUG;DISABLE_ILRUNTIME_DEBUG
+    Android: UNICOM_DEBUG
   additionalCompilerArguments:
     Android: []
   platformArchitecture: {}

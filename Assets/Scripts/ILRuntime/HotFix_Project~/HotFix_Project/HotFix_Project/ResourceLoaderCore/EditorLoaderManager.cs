@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UnityEngine;
 
 namespace HotFix_Project.ResourceLoaderCore
 {
     public class EditorLoaderManager : ResourceLoaderManager
     {
-        public override T LoadAssetAsync<T>(string path, string name)
+
+        public EditorLoaderManager() : base("EditorLoader")
         {
-            return null;
+
+        }
+
+        public override void LoadUiAssetAsync<T>(string assetName, System.Action<bool, T> callback)
+        {
+            string bundleName = "ui/logic/gamecontroller";
+            HotFixMonoBehaviour.Instance.DoCoroutine(LoadAssetAsync<T>(bundleName, assetName, callback));
         }
     }
 }

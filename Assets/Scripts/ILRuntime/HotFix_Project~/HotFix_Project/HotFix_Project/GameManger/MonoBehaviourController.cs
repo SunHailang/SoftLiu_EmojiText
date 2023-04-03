@@ -9,48 +9,64 @@ namespace HotFix_Project
 {
     public class MonoBehaviourController
     {
-
+        private static bool m_entryGame = false;
+        #region 生命周期函数
         public static void Awake()
         {
-            //Debug.Log("Awake");
+            
         }
 
         public static void OnEnable()
         {
-            //Debug.Log("OnEnable");
+            
         }
 
         public static void Start()
         {
-            //Debug.Log("Start");
-            var proxy = ResourceLoaderCore.ResourceLoaderProxy.GetInstance();
-            Debug.Log(proxy.ToString());
+            EntryGame();
         }
 
         public static void Update()
         {
-            //Debug.Log($"Update -> deltaTime:{UnityEngine.Time.deltaTime}");
+            if (!m_entryGame) return;
+            UIManager.Instance.Update(UnityEngine.Time.deltaTime);
             TimerManager.Instance.Update(UnityEngine.Time.deltaTime);
         }
 
         public static void FixedUpdate()
         {
-            //Debug.Log($"FixedUpdate -> fixedDeltaTime:{UnityEngine.Time.fixedDeltaTime}");
+            if (!m_entryGame) return;
         }
 
         public static void LateUpdate()
         {
-            //Debug.Log("LateUpdate");
+            if (!m_entryGame) return;
         }
 
         public static void OnDisable()
         {
-            //Debug.Log("OnDisable");
+            m_entryGame = false;
         }
 
         public static void OnDestory()
         {
-            //Debug.Log("OnDestory");
+            ExistGame();
+        }
+
+        #endregion
+
+        public static void EntryGame()
+        {
+            GameController.Instance.Initialization();
+            TimerManager.Instance.Initialization();
+
+            m_entryGame = true;
+        }
+
+        public static void ExistGame()
+        {
+            TimerManager.Instance.Dispose();
+            GameController.Instance.Dispose();
         }
 
     }

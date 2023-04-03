@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HotFix_Project
+namespace HotFix_Project.Timer
 {
     public class TimerUpdate : Timer
     {
@@ -12,12 +12,28 @@ namespace HotFix_Project
         {
 
         }
+        public override void Start()
+        {
 
+        }
+        public override void Pause()
+        {
+            
+        }
 
         public override void Process(float deltaTime)
         {
-            base.Process(deltaTime);
+            
         }
 
+        protected override void DisposeManagedResources()
+        {
+            
+        }
+
+        protected override void DisposeUnManagedResources()
+        {
+            
+        }
     }
 }

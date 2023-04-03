@@ -8,9 +8,14 @@ namespace HotFix_Project.ResourceLoaderCore
 {
     public class AssetBundleLoaderManager : ResourceLoaderManager
     {
-        public override T LoadAssetAsync<T>(string path, string name)
+
+        public AssetBundleLoaderManager() : base("AssetBundleLoader")
         {
-            return null;
+
+        }
+        public override void LoadUiAssetAsync<T>(string assetName, System.Action<bool, T> callback)
+        {
+
         }
     }
 }

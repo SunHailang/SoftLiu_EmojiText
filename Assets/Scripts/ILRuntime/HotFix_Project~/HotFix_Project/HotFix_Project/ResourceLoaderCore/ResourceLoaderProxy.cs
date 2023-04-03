@@ -8,19 +8,18 @@ namespace HotFix_Project.ResourceLoaderCore
 {
     public class ResourceLoaderProxy
     {
-        private Dictionary<string, string> m_assetbundleLoadDict = new Dictionary<string, string>();
-
         static ResourceLoaderProxy()
         {
 
         }
+
         public static ResourceLoaderManager GetInstance()
         {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
             return new EditorLoaderManager();
-#else
-            return new AssetBundleLoaderManager();
-#endif
+//#else
+            //return new AssetBundleLoaderManager();
+//#endif
         }
     }
 

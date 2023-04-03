@@ -10,7 +10,7 @@ namespace HotFix_Project
     {
         // 用一颗树记录当前游戏内的所有的Timer对象
 
-        private LinkedList<Timer> m_timerLinkList = new LinkedList<Timer>();
+        private LinkedList<Timer.Timer> m_timerLinkList = new LinkedList<Timer.Timer>();
 
 
         public void Initialization()
@@ -20,7 +20,7 @@ namespace HotFix_Project
 
         public void Update(float deltaTime)
         {
-            IEnumerator<Timer> timers = m_timerLinkList.GetEnumerator();
+            IEnumerator<Timer.Timer> timers = m_timerLinkList.GetEnumerator();
             while (timers.MoveNext())
             {
                 if (timers.Current != null)
@@ -31,10 +31,9 @@ namespace HotFix_Project
         }
 
 
-
-        public void Release()
+        protected override void DisposeManagedResources()
         {
-            IEnumerator<Timer> timers = m_timerLinkList.GetEnumerator();
+            IEnumerator<Timer.Timer> timers = m_timerLinkList.GetEnumerator();
             while (timers.MoveNext())
             {
                 if (timers.Current != null)
