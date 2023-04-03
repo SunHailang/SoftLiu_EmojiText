@@ -4,11 +4,9 @@ namespace HotFix_Project.UI.UICore
 {
     public class UiBase : UiComponent
     {
-        public UiBase(GameObject bindingGo): base(bindingGo)
+        public override void BindingGo(GameObject go)
         {
-
+            m_curGo = go;
         }
-
-
     }
 }

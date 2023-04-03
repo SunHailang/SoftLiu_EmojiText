@@ -49,7 +49,7 @@ namespace HotFix_Project.ResourceLoaderCore
             return m_curKeyID;
         }
 
-        public abstract System.Collections.IEnumerator LoadUiAssetAsync<T>(string assetName, System.Action<bool, T> callback) where T : UnityEngine.Object;
+        public abstract void LoadUiAssetAsync<T>(string assetName, System.Action<bool, T> callback) where T : UnityEngine.Object;
 
         protected System.Collections.IEnumerator LoadAssetAsync<T>(string bundleName, string name, System.Action<bool, T> callback) where T : UnityEngine.Object
         {
@@ -60,13 +60,11 @@ namespace HotFix_Project.ResourceLoaderCore
             
             if (m_assetbundleLoadDict.TryGetValue(bundleName, out AsyncAssetHandler assetHandler) && assetHandler != null && !assetHandler.IsNull())
             {
+                // 加载 Bundle内的GameObject
                 AssetBundleRequest assetRequest = assetHandler.AssetBundleData.LoadAssetAsync<T>(name);
                 yield return assetRequest;
                 var assetObj = assetRequest.asset;
                 T obj = assetObj as T;
-
-                //T asset = assetHandler.AssetBundleData.LoadAsset<T>(name);
-                //T obj = asset;
                 
                 if (obj != null)
                 {

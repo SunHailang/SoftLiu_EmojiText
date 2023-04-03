@@ -13,11 +13,11 @@ namespace HotFix_Project.ResourceLoaderCore
         {
 
         }
-        public override System.Collections.IEnumerator LoadUiAssetAsync<T>(string assetName, System.Action<bool, T> callback)
+        public override void LoadUiAssetAsync<T>(string assetName, System.Action<bool, T> callback)
         {
-            string bundleName = "ui/logic/gamecontroller";
+            string bundleName = $"ui/logic/{assetName.ToLower()}";
             UnityEngine.Debug.Log($"[AssetBundleLoaderManager LoadUiAssetAsync] : {bundleName}");
-            yield return LoadAssetAsync<T>(bundleName, assetName, callback);
+            HotFixMonoBehaviour.Instance.DoCoroutine(LoadAssetAsync<T>(bundleName, assetName, callback));
         }
     }
 }

@@ -9,10 +9,7 @@ namespace HotFix_Project.UI.UICore
 
         private Dictionary<int, System.Type> m_curComponent = new Dictionary<int, System.Type>();
 
-        public UiComponent(GameObject bindingGo)
-        {
-            m_curGo = bindingGo;
-        }
+        public abstract void BindingGo(GameObject go);
 
         public virtual T GetComponent<T>() where T : UiComponent
         {

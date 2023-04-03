@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GameController
+  m_Name: LoginCanvas
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -56,20 +56,17 @@ SpriteAtlas:
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
-    - {fileID: 102900000, guid: 0ac576e1b7b5f1047ae5972108f0264d, type: 3}
+    - {fileID: 102900000, guid: 93927bb3c928af249afce376fd1aa849, type: 3}
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
     - 7b0ddd95680fb9d4bb76071c7082174a: 21300000
-    - 57ff73ca685d4444288821c6bf40ac6d: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 7b0ddd95680fb9d4bb76071c7082174a, type: 3}
-  - {fileID: 21300000, guid: 57ff73ca685d4444288821c6bf40ac6d, type: 3}
   m_PackedSpriteNamesToIndex:
   - StartHoverSprite
-  - Img_Com_Loading
   m_RenderDataMap: {}
-  m_Tag: GameController
+  m_Tag: LoginCanvas
   m_IsVariant: 0

@@ -1,5 +1,7 @@
-﻿using HotFix_Project.UI.UICore;
+﻿using HotFix_Project.ResourceLoaderCore;
+using HotFix_Project.UI.UICore;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace HotFix_Project
 {
@@ -8,7 +10,10 @@ namespace HotFix_Project
         private bool m_enable = false;
 
         #region Root
-
+        private RectTransform m_mainRootRect = null;
+        private RectTransform m_windowRootRect = null;
+        private RectTransform m_tipsRootRect = null;
+        private RectTransform m_topRootRect = null;
 
         #endregion
 
@@ -20,6 +25,15 @@ namespace HotFix_Project
         public void Initialization()
         {
 
+        }
+
+        public void BindingGo(GameObject go)
+        {
+            Debug.Log($"[UIManager] Binding GameObject {go.name}.");
+            m_mainRootRect = go.transform.Find("MainRoot").GetComponent<RectTransform>();
+            m_windowRootRect = go.transform.Find("WindowRoot").GetComponent<RectTransform>();
+            m_tipsRootRect = go.transform.Find("TipsRoot").GetComponent<RectTransform>();
+            m_topRootRect = go.transform.Find("TopRoot").GetComponent<RectTransform>();
         }
 
         public void Update(float deltaTime)
@@ -34,11 +48,38 @@ namespace HotFix_Project
         #endregion
 
 
-        public void OpenUI<T>() where T : UiBase
+        public void OpenCanvasUI<T>() where T : UiBase, new()
+        {
+            System.Type type = typeof(T);
+            
+
+            void callback(bool success, GameObject go)
+            {
+                if (success)
+                {
+                    GameObject obj = GameObject.Instantiate<GameObject>(go);
+                    obj.transform.SetParent(m_mainRootRect);
+                    obj.transform.localPosition = Vector3.zero;
+                    obj.transform.localScale = Vector3.one;
+                    obj.transform.localRotation = Quaternion.identity;
+                    obj.transform.SetAsLastSibling();
+                    UiBase ins = new T();
+                    ins.BindingGo(obj);
+                }
+                else
+                {
+                    Debug.LogError("[UiManager] OpenUI LoadUiAsset Error.");
+                }
+            }
+
+            ResourceLoaderProxy.GetInstance().LoadUiAssetAsync<GameObject>(type.Name, callback);
+
+            m_canvasStack.Push(type.Name);
+        }
+
+        public void OpenWindowUI<T>() where T : UiBase
         {
 
         }
-
-
     }
 }
