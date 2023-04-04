@@ -3,24 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32413.511
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotFix_Project", "HotFix_Project\HotFix_Project.csproj", "{5412F69F-5406-4229-BC3E-AC4CFF7885FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotFix_Project", "HotFix_Project\HotFix_Project.csproj", "{7F23F183-BBD4-4720-BC41-23096B431575}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Andoid = Debug|Andoid
-		Debug|Unity = Debug|Unity
-		Release|Andoid = Release|Andoid
-		Release|Unity = Release|Unity
+		Android_Debug|Any CPU = Android_Debug|Any CPU
+		Android_Release|Any CPU = Android_Release|Any CPU
+		Unity|Any CPU = Unity|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5412F69F-5406-4229-BC3E-AC4CFF7885FD}.Debug|Andoid.ActiveCfg = Debug|Any CPU
-		{5412F69F-5406-4229-BC3E-AC4CFF7885FD}.Debug|Andoid.Build.0 = Debug|Any CPU
-		{5412F69F-5406-4229-BC3E-AC4CFF7885FD}.Debug|Unity.ActiveCfg = Debug|Any CPU
-		{5412F69F-5406-4229-BC3E-AC4CFF7885FD}.Debug|Unity.Build.0 = Debug|Any CPU
-		{5412F69F-5406-4229-BC3E-AC4CFF7885FD}.Release|Andoid.ActiveCfg = Release|Any CPU
-		{5412F69F-5406-4229-BC3E-AC4CFF7885FD}.Release|Andoid.Build.0 = Release|Any CPU
-		{5412F69F-5406-4229-BC3E-AC4CFF7885FD}.Release|Unity.ActiveCfg = Release|Any CPU
-		{5412F69F-5406-4229-BC3E-AC4CFF7885FD}.Release|Unity.Build.0 = Release|Any CPU
+		{7F23F183-BBD4-4720-BC41-23096B431575}.Android_Debug|Any CPU.ActiveCfg = Android_Debug|Any CPU
+		{7F23F183-BBD4-4720-BC41-23096B431575}.Android_Release|Any CPU.ActiveCfg = Android_Release|Any CPU
+		{7F23F183-BBD4-4720-BC41-23096B431575}.Unity|Any CPU.ActiveCfg = Unity|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

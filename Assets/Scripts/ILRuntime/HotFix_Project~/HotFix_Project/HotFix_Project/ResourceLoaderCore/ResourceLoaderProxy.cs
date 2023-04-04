@@ -24,6 +24,8 @@ namespace HotFix_Project.ResourceLoaderCore
                 {
 #if UNITY_EDITOR
                     m_manager = new EditorLoaderManager();
+#elif UNITY_IOS
+
 #else
                     m_manager = new AssetBundleLoaderManager();
 #endif
