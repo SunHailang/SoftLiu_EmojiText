@@ -7,7 +7,7 @@ public static class BuildsMenuEditor
     [MenuItem("Builds/Android/Build Development")]
     public static void BuildsAndroidEditor_Development()
     {
-        
+        BuildProcess.Excute(BuildTarget.Android, BuildType.Development);
     }
     [MenuItem("Builds/Android/Build PreProduction")]
     public static void BuildsAndroidEditor_PreProduction()
