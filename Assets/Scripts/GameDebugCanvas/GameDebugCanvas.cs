@@ -14,6 +14,9 @@ public class GameDebugCanvas : MonoBehaviour
     [SerializeField] private RectTransform m_curBtnLogRect = null;
     [SerializeField] private Button m_curBtnLog = null;
     [SerializeField] private Button m_closeBtnLog = null;
+
+    [SerializeField] private RectTransform m_debugArow = null;
+    
     private StringBuilder m_curLog = new StringBuilder();
 
     private bool m_isShowLog = false;

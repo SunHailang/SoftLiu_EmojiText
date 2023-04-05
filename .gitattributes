@@ -6,3 +6,7 @@
 *.asset filter=lfs diff=lfs merge=lfs -text
 *.unity filter=lfs diff=lfs merge=lfs -text
 *.prefab filter=lfs diff=lfs merge=lfs -text
+*.mp3 filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.ogg filter=lfs diff=lfs merge=lfs -text
+*.mav filter=lfs diff=lfs merge=lfs -text

@@ -90,6 +90,14 @@ namespace HotFix_Project.ResourceLoaderCore
                 Debug.Log($"[LoadAssetDependencieAsync] AB包存在循环引用 : {bundleName}");
                 yield break;
             }
+
+            // 获取依赖
+            string[] dependencies = m_assetBundleManifest.GetAllDependencies(bundleName);
+            for (int i = 0; i < dependencies.Length; i++)
+            {
+                yield return LoadAssetDependencieAsync(dependencies[i]);
+            }
+
             if (!m_assetbundleLoadDict.TryGetValue(bundleName, out AsyncAssetHandler assetHandler) || assetHandler == null || assetHandler.IsNull())
             {
                 string filePath = Path.Combine(m_rootPath, bundleName);
@@ -121,12 +129,7 @@ namespace HotFix_Project.ResourceLoaderCore
             {
                 assetHandler.Count++;
             }
-            // 获取依赖
-            string[] dependencies = m_assetBundleManifest.GetAllDependencies(assetHandler.AssetBundleName);
-            for (int i = 0; i < dependencies.Length; i++)
-            {
-                yield return LoadAssetDependencieAsync(dependencies[i]);
-            }
+            
         }
 
         public System.Collections.IEnumerator UnloadAssetAsync(string bundleName)
