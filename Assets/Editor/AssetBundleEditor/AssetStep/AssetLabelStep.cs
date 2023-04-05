@@ -45,13 +45,13 @@ namespace AssetBundleEditor
         /// <param name="isClear"></param>
         public static void AssetLabelUpdate(bool isClear, HashSet<string> assetLabelList = null, string output = null)
         {
+            // 设置UI逻辑资源
             SetUiLogicAssetLabel(isClear, assetLabelList);
-
-            DirectoryInfo fontDir = new DirectoryInfo($"{m_assetbundlePackageRootPath}/UI/Fonts");
-            FileInfo[] fonts = fontDir.GetFiles("*", SearchOption.AllDirectories);
-            string fontsAssetName = isClear ? "" : "ui/fonts";
-            if (!string.IsNullOrEmpty(fontsAssetName) && assetLabelList != null) assetLabelList.Add(fontsAssetName);
-            SetAssetLabel(fonts, fontsAssetName);
+            // 设置字体
+            SetFontAssetLabe(isClear, assetLabelList);
+            // 设置场景 Environments
+            SetEnvironmentsAssetLabel(isClear, assetLabelList);
+            
             // 清空无用的AssetBundle标记
             AssetDatabase.RemoveUnusedAssetBundleNames();
             if (!isClear && assetLabelList != null && !string.IsNullOrEmpty(output))
@@ -63,6 +63,44 @@ namespace AssetBundleEditor
             AssetDatabase.Refresh();
         }
 
+        /// <summary>
+        /// 设置 Environments 路径下的所有需要打 AB 包的的资源
+        /// </summary>
+        /// <param name="isClear"></param>
+        /// <param name="assetLabelList"></param>
+        private static void SetEnvironmentsAssetLabel(bool isClear, HashSet<string> assetLabelList)
+        {
+            DirectoryInfo uiLogicDir = new DirectoryInfo($"{m_assetbundlePackageRootPath}/Environments");
+            DirectoryInfo[] dirInfos = uiLogicDir.GetDirectories();
+            for (int index = 0; index < dirInfos.Length; index++)
+            {
+                DirectoryInfo dirInfo = dirInfos[index];
+                string dirName = dirInfo.Name;
+
+                FileInfo[] files = dirInfo.GetFiles("*", SearchOption.AllDirectories);
+                string uiLogicAssetName = isClear ? "" : $"environments/{dirName.ToLower()}";
+                if (!string.IsNullOrEmpty(uiLogicAssetName) && assetLabelList != null)
+                {
+                    assetLabelList.Add(uiLogicAssetName);
+                }
+
+                SetAssetLabel(files, uiLogicAssetName);
+            }
+        }
+        /// <summary>
+        /// 设置 UI/Fonts 路径下字体 AB 包
+        /// </summary>
+        /// <param name="isClear"></param>
+        /// <param name="assetLabelList"></param>
+        public static void SetFontAssetLabe(bool isClear, HashSet<string> assetLabelList)
+        {
+            DirectoryInfo fontDir = new DirectoryInfo($"{m_assetbundlePackageRootPath}/UI/Fonts");
+            FileInfo[] fonts = fontDir.GetFiles("*", SearchOption.AllDirectories);
+            string fontsAssetName = isClear ? "" : "ui/fonts";
+            if (!string.IsNullOrEmpty(fontsAssetName) && assetLabelList != null) assetLabelList.Add(fontsAssetName);
+            SetAssetLabel(fonts, fontsAssetName);
+        }
+        
         /// <summary>
         /// 设置 AssetBundlePackage/UI/Logic 路径下的所有需要打 AB包的资源
         /// </summary>
@@ -105,7 +143,6 @@ namespace AssetBundleEditor
             foreach (FileInfo fileInfo in fileList)
             {
                 if (fileInfo.Extension == ".meta") continue;
-
                 string basePath = UtilityEditor.GetBasePath(fileInfo.FullName);
                 AssetImporter assetImporter = AssetImporter.GetAtPath(basePath);
                 if (assetImporter != null)
@@ -113,6 +150,10 @@ namespace AssetBundleEditor
                     if (assetImporter.assetBundleName != assetName)
                     {
                         assetImporter.assetBundleName = assetName;
+                        if (fileInfo.Extension == ".unity" && !string.IsNullOrEmpty(assetName))
+                        {
+                            assetImporter.assetBundleVariant = "unity";
+                        }
                     }
                 }
             }
