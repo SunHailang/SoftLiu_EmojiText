@@ -9,7 +9,7 @@ namespace HotFix_Project.ResourceLoaderCore
     public class ResourceLoaderProxy
     {
         private static ResourceLoaderManager m_manager = null;
-        private static object _lock = new object();
+        private readonly static object _lock = new object();
 
         static ResourceLoaderProxy()
         {
@@ -23,9 +23,14 @@ namespace HotFix_Project.ResourceLoaderCore
                 if (m_manager == null)
                 {
 #if UNITY_EDITOR
-                    m_manager = new EditorLoaderManager();
-#elif UNITY_IOS
-
+                    if (!GameConfigData.UseAssetBundleLoader)
+                    {
+                        m_manager = new EditorLoaderManager();
+                    }
+                    else
+                    {
+                        m_manager = new AssetBundleLoaderManager();
+                    }
 #else
                     m_manager = new AssetBundleLoaderManager();
 #endif

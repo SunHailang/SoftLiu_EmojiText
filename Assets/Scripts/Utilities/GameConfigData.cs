@@ -3,6 +3,19 @@ using UnityEngine;
 
 public static class GameConfigData
 {
+    public static bool UseAssetBundleLoader
+    {
+        get
+        {
+#if UNITY_EDITOR
+            return UnityEditor.Menu.GetChecked("HotFix/Editor Use AssetBundle Loader");
+#else
+            return false;
+#endif
+        }
+    }
+
+
     /// <summary>
     /// 获取当前平台的名称
     /// </summary>

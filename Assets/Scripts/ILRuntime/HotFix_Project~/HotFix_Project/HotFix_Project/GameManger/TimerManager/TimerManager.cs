@@ -10,7 +10,7 @@ namespace HotFix_Project
     {
         // 用一颗树记录当前游戏内的所有的Timer对象
 
-        private LinkedList<Timer.Timer> m_timerLinkList = new LinkedList<Timer.Timer>();
+        private readonly LinkedList<Timer.Timer> m_timerLinkList = new LinkedList<Timer.Timer>();
 
 
         public void Initialization()

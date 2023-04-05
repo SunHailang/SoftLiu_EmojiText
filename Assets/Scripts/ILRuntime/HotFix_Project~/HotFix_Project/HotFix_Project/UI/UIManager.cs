@@ -64,7 +64,7 @@ namespace HotFix_Project
                     obj.transform.localRotation = Quaternion.identity;
                     obj.transform.SetAsLastSibling();
                     UiBase ins = new T();
-                    ins.BindingGo(obj);
+                    ins.Initialization(obj);
                 }
                 else
                 {

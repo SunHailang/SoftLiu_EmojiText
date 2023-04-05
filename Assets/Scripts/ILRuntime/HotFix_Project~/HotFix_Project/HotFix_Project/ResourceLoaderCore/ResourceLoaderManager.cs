@@ -7,18 +7,18 @@ namespace HotFix_Project.ResourceLoaderCore
 {
     public abstract class ResourceLoaderManager : IDisposable
     {
-        private string m_curKeyID = "";
+        private readonly string m_curKeyID = "";
 
-        private string m_rootPath = "";
+        private readonly string m_rootPath = "";
 
-        private string m_assetBundleMainName = "AssetBundle";
+        private readonly string m_assetBundleMainName = "AssetBundle";
         private AssetBundleManifest m_assetBundleManifest = null;
 
-        private Dictionary<string, AsyncAssetHandler> m_assetbundleLoadDict = new Dictionary<string, AsyncAssetHandler>();
+        private readonly Dictionary<string, AsyncAssetHandler> m_assetbundleLoadDict = new Dictionary<string, AsyncAssetHandler>();
         /// <summary>
         /// 校验 加载、卸载 AssetBundle时候可能会存在循环依赖
         /// </summary>
-        private HashSet<string> m_checkBundleCycleDependencies = new HashSet<string>();
+        private readonly HashSet<string> m_checkBundleCycleDependencies = new HashSet<string>();
 
         public ResourceLoaderManager(string KeyID)
         {
@@ -50,6 +50,8 @@ namespace HotFix_Project.ResourceLoaderCore
         }
 
         public abstract void LoadUiAssetAsync<T>(string assetName, System.Action<bool, T> callback) where T : UnityEngine.Object;
+
+        public abstract void LoadSceneAssetAsync(string sceneName, System.Action<bool> callback);
 
         protected System.Collections.IEnumerator LoadAssetAsync<T>(string bundleName, string name, System.Action<bool, T> callback) where T : UnityEngine.Object
         {
@@ -158,7 +160,7 @@ namespace HotFix_Project.ResourceLoaderCore
                     else
                     {
                         assetHandler.Count--;
-                        if (assetHandler.Count <= 0)
+                        //if (assetHandler.Count <= 0)
                         {
                             // 卸载当前的 assetbundle
                             yield return assetHandler.AssetBundleData.UnloadAsync(true);

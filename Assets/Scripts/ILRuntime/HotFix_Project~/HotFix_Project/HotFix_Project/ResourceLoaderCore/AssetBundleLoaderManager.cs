@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using System;
 
 namespace HotFix_Project.ResourceLoaderCore
 {
@@ -13,6 +10,12 @@ namespace HotFix_Project.ResourceLoaderCore
         {
 
         }
+
+        public override void LoadSceneAssetAsync(string sceneName, Action<bool> callback)
+        {
+           
+        }
+
         public override void LoadUiAssetAsync<T>(string assetName, System.Action<bool, T> callback)
         {
             string bundleName = $"ui/logic/{assetName.ToLower()}";

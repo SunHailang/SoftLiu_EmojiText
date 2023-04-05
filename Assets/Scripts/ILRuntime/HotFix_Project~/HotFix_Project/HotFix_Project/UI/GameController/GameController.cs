@@ -1,5 +1,4 @@
 ﻿using HotFix_Project.ResourceLoaderCore;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
@@ -34,7 +33,7 @@ namespace HotFix_Project
             HotFixMonoBehaviour.Instance.DoCoroutine(LoadEntryScene());
         }
 
-        private IEnumerator LoadEntryScene()
+        private System.Collections.IEnumerator LoadEntryScene()
         {
             Debug.Log("LoadEntryScene : Start GameEntry");
             yield return SceneManager.LoadSceneAsync("GameEntry");
