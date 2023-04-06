@@ -1,5 +1,4 @@
-﻿using HotFix_Project.ResourceLoaderCore;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
 
@@ -20,15 +19,13 @@ namespace HotFix_Project
             GameObject.DontDestroyOnLoad(m_curController);
             // 1. 绑定 UiManager
             GameObject uiManager = go.transform.Find("UiManager").gameObject;
-            UIManager.Instance.BindingGo(uiManager);
+            UIManager.Instance.Initialization(uiManager);
 
             UIManager.Instance.OpenCanvasUI<UI.LoginCanvas>();
         }
 
         public void Initialization()
         {
-            UIManager.Instance.Initialization();
-
             SpriteAtlasManager.atlasRequested += OnAtlasRequested;
             HotFixMonoBehaviour.Instance.DoCoroutine(LoadEntryScene());
         }
@@ -38,7 +35,7 @@ namespace HotFix_Project
             Debug.Log("LoadEntryScene : Start GameEntry");
             yield return SceneManager.LoadSceneAsync("GameEntry");
             Debug.Log("LoadEntryScene : End GameEntry");
-            ResourceLoaderProxy.GetInstance().LoadUiAssetAsync<GameObject>("GameController", LoadAssetCallback);
+            ResourceLoaderProxy.GetInstance().LoadUiAssetAsync("GameController", LoadAssetCallback);
         }
 
         private void LoadAssetCallback(bool success, GameObject obj)
@@ -59,12 +56,15 @@ namespace HotFix_Project
             }
         }
 
-
+        public void Release()
+        {
+            this.Dispose();
+        }
 
         public void OnAtlasRequested(string tag, System.Action<SpriteAtlas> callback)
         {
             Debug.Log($"[OnAtlasRequested] Tag: {tag}");
-             ResourceLoaderProxy.GetInstance().LoadUiAssetAsync<SpriteAtlas>(tag, (success, sprite) =>
+             ResourceLoaderProxy.GetInstance().LoadUiAssetAsync(tag, (success, sprite) =>
              {
                  if (success)
                  {

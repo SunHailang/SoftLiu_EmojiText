@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 public static class VersionUtilities
 {
@@ -50,13 +51,15 @@ public static class VersionUtilities
             string jsonText = System.Text.Encoding.UTF8.GetString(bytes);
             data = LitJson.JsonMapper.ToObject<T>(jsonText);
         }
+
         data ??= new T();
         return data;
     }
 }
-
+[Preserve]
 public class AssetInfoData
 {
+    public AssetInfoData(){}
     public string Path = "";
     public string MD5 = "";
     public int Size = 0;
@@ -67,9 +70,14 @@ public class AssetVersionData
     public uint Version = 0;
     public List<AssetInfoData> AssetMd5List = null;
 }
-
+[Preserve]
 public class ResInfoData
 {
+    public ResInfoData()
+    {
+        
+    }
+
     public string Name = "";
     public uint Version = 0;
 }

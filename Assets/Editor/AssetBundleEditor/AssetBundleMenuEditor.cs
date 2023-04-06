@@ -11,15 +11,6 @@ namespace AssetBundleEditor
 {
     public static class AssetBundleMenuEditor
     {
-#if UNITY_EDITOR
-        [MenuItem("HotFix/Editor Use AssetBundle Loader")]
-        public static void SetEditorUserAssetBundleLoader()
-        {
-            Menu.SetChecked("HotFix/Editor Use AssetBundle Loader", !Menu.GetChecked("HotFix/Editor Use AssetBundle Loader"));
-        }
-#endif
-        
-        
         #region AssetMenu
         
         [MenuItem("HotFix/AssetBundle/Build PC")]

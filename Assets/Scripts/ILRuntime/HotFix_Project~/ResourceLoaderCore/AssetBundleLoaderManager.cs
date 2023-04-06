@@ -11,10 +11,12 @@ namespace HotFix_Project.ResourceLoaderCore
 
         }
 
-        public override void LoadSceneAssetAsync(string sceneName, Action<bool> callback)
+        public override System.Collections.IEnumerator LoadSceneAssetAsync<T>(string sceneName, Action<bool, T> callback)
         {
-           
+            string bundleName = $"environments/{sceneName.ToLower()}.unity3d";
+            yield return LoadAssetAsync(bundleName, sceneName, callback);
         }
+
 
         public override void LoadUiAssetAsync<T>(string assetName, System.Action<bool, T> callback)
         {

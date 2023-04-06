@@ -51,7 +51,7 @@ namespace AssetBundleEditor
             SetFontAssetLabe(isClear, assetLabelList);
             // 设置场景 Environments
             SetEnvironmentsAssetLabel(isClear, assetLabelList);
-            
+
             // 清空无用的AssetBundle标记
             AssetDatabase.RemoveUnusedAssetBundleNames();
             if (!isClear && assetLabelList != null && !string.IsNullOrEmpty(output))
@@ -79,14 +79,10 @@ namespace AssetBundleEditor
 
                 FileInfo[] files = dirInfo.GetFiles("*", SearchOption.AllDirectories);
                 string uiLogicAssetName = isClear ? "" : $"environments/{dirName.ToLower()}";
-                if (!string.IsNullOrEmpty(uiLogicAssetName) && assetLabelList != null)
-                {
-                    assetLabelList.Add(uiLogicAssetName);
-                }
-
-                SetAssetLabel(files, uiLogicAssetName);
+                SetAssetLabel(files, uiLogicAssetName, assetLabelList);
             }
         }
+
         /// <summary>
         /// 设置 UI/Fonts 路径下字体 AB 包
         /// </summary>
@@ -97,10 +93,9 @@ namespace AssetBundleEditor
             DirectoryInfo fontDir = new DirectoryInfo($"{m_assetbundlePackageRootPath}/UI/Fonts");
             FileInfo[] fonts = fontDir.GetFiles("*", SearchOption.AllDirectories);
             string fontsAssetName = isClear ? "" : "ui/fonts";
-            if (!string.IsNullOrEmpty(fontsAssetName) && assetLabelList != null) assetLabelList.Add(fontsAssetName);
-            SetAssetLabel(fonts, fontsAssetName);
+            SetAssetLabel(fonts, fontsAssetName, assetLabelList);
         }
-        
+
         /// <summary>
         /// 设置 AssetBundlePackage/UI/Logic 路径下的所有需要打 AB包的资源
         /// </summary>
@@ -123,17 +118,12 @@ namespace AssetBundleEditor
                     DirectoryInfo prefabDir = new DirectoryInfo(uiDirPath);
                     FileInfo[] files = prefabDir.GetFiles("*", SearchOption.AllDirectories);
                     string uiLogicAssetName = isClear ? "" : $"ui/logic/{dirName}";
-                    if (!string.IsNullOrEmpty(uiLogicAssetName) && assetLabelList != null)
-                    {
-                        assetLabelList.Add(uiLogicAssetName);
-                    }
-
-                    SetAssetLabel(files, uiLogicAssetName);
+                    SetAssetLabel(files, uiLogicAssetName, assetLabelList);
                 }
             }
         }
 
-        private static void SetAssetLabel(FileInfo[] fileList, string assetName)
+        private static void SetAssetLabel(FileInfo[] fileList, string assetName, HashSet<string> assetLabelList)
         {
             if (fileList == null || fileList.Length <= 0)
             {
@@ -149,14 +139,16 @@ namespace AssetBundleEditor
                 {
                     if (assetImporter.assetBundleName != assetName)
                     {
-                        assetImporter.assetBundleName = assetName;
                         if (fileInfo.Extension == ".unity" && !string.IsNullOrEmpty(assetName))
                         {
-                            assetImporter.assetBundleVariant = "unity";
+                            assetName += ".unity3d";
                         }
+                        assetImporter.assetBundleName = assetName;
                     }
                 }
             }
+
+            if (!string.IsNullOrEmpty(assetName) && assetLabelList != null) assetLabelList.Add(assetName);
         }
 
         private static void ClearAssetBundle(HashSet<string> assetLabelList, string output)
@@ -186,7 +178,7 @@ namespace AssetBundleEditor
                 root = output.Substring(outIndex + root.Length);
                 for (int i = 0; i < data.AssetMd5List.Count; i++)
                 {
-                    if(data.AssetMd5List[i].Path.EndsWith(".manifest")) continue;
+                    if (data.AssetMd5List[i].Path.EndsWith(".manifest")) continue;
                     // int index = data.AssetBundleMd5List[i].Path.IndexOf(root, StringComparison.Ordinal);
                     if (root.Length >= data.AssetMd5List[i].Path.Length) continue;
                     string assetLabel = data.AssetMd5List[i].Path.Substring(root.Length);

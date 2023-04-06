@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-
+﻿
 namespace HotFix_Project
 {
     public class MonoBehaviourController
@@ -65,8 +59,8 @@ namespace HotFix_Project
 
         public static void ExistGame()
         {
-            TimerManager.Instance.Dispose();
-            GameController.Instance.Dispose();
+            TimerManager.Instance.Release();
+            GameController.Instance.Release();
         }
 
     }

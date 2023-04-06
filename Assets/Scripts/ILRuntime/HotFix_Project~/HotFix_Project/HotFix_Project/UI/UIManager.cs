@@ -1,5 +1,4 @@
-﻿using HotFix_Project.ResourceLoaderCore;
-using HotFix_Project.UI.UICore;
+﻿using HotFix_Project.UI.UICore;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,31 +9,35 @@ namespace HotFix_Project
         private bool m_enable = false;
 
         #region Root
+
         private RectTransform m_mainRootRect = null;
         private RectTransform m_windowRootRect = null;
         private RectTransform m_tipsRootRect = null;
         private RectTransform m_topRootRect = null;
 
+        private RectTransform m_loadingRootRect = null;
+
         #endregion
 
-        private Stack<string> m_canvasStack = new Stack<string>();
+        private readonly Dictionary<System.Type, UiBase> m_canvasStack = new Dictionary<System.Type, UiBase>();
 
-        private Stack<string> m_windowStack = new Stack<string>();
+        private readonly Dictionary<System.Type, UiBase> m_windowStack = new Dictionary<System.Type, UiBase>();
+
+        private UI.LoadingCanvas m_loading = null;
 
         #region 生命周期
-        public void Initialization()
-        {
-
-        }
-
-        public void BindingGo(GameObject go)
+        public void Initialization(GameObject go)
         {
             Debug.Log($"[UIManager] Binding GameObject {go.name}.");
             m_mainRootRect = go.transform.Find("MainRoot").GetComponent<RectTransform>();
             m_windowRootRect = go.transform.Find("WindowRoot").GetComponent<RectTransform>();
             m_tipsRootRect = go.transform.Find("TipsRoot").GetComponent<RectTransform>();
             m_topRootRect = go.transform.Find("TopRoot").GetComponent<RectTransform>();
+            m_loadingRootRect = go.transform.Find("LoadingRoot").GetComponent<RectTransform>();
+
+            m_enable = true;
         }
+
 
         public void Update(float deltaTime)
         {
@@ -43,7 +46,7 @@ namespace HotFix_Project
 
         public void Release()
         {
-
+            this.Dispose();
         }
         #endregion
 
@@ -51,7 +54,6 @@ namespace HotFix_Project
         public void OpenCanvasUI<T>() where T : UiBase, new()
         {
             System.Type type = typeof(T);
-            
 
             void callback(bool success, GameObject go)
             {
@@ -59,27 +61,115 @@ namespace HotFix_Project
                 {
                     GameObject obj = GameObject.Instantiate<GameObject>(go);
                     obj.transform.SetParent(m_mainRootRect);
-                    obj.transform.localPosition = Vector3.zero;
-                    obj.transform.localScale = Vector3.one;
-                    obj.transform.localRotation = Quaternion.identity;
-                    obj.transform.SetAsLastSibling();
+                    SetUiCanvase(obj);
                     UiBase ins = new T();
                     ins.Initialization(obj);
+                    if (m_canvasStack.TryGetValue(type, out UiBase ui))
+                    {
+                        ui.Dispose();
+                    }
+                    m_canvasStack[type] = ins;
                 }
                 else
                 {
-                    Debug.LogError("[UiManager] OpenUI LoadUiAsset Error.");
+                    Debug.LogError("[UiManager] OpenCanvasUI LoadUiAsset Error.");
                 }
             }
 
-            ResourceLoaderProxy.GetInstance().LoadUiAssetAsync<GameObject>(type.Name, callback);
-
-            m_canvasStack.Push(type.Name);
+            ResourceLoaderProxy.GetInstance().LoadUiAssetAsync(type.Name, callback);
         }
 
-        public void OpenWindowUI<T>() where T : UiBase
+        public void OpenWindowUI<T>() where T : UiBase, new()
         {
+            System.Type type = typeof(T);
 
+            void callback(bool success, GameObject go)
+            {
+                if (success)
+                {
+                    GameObject obj = GameObject.Instantiate<GameObject>(go);
+                    obj.transform.SetParent(m_windowRootRect);
+                    SetUiCanvase(obj);
+                    UiBase ins = new T();
+                    ins.Initialization(obj);
+                    if (m_canvasStack.TryGetValue(type, out UiBase ui))
+                    {
+                        ui.Dispose();
+                    }
+                    m_windowStack[type] = ins;
+                }
+                else
+                {
+                    Debug.LogError("[UiManager] OpenCanvasUI LoadUiAsset Error.");
+                }
+            }
+            ResourceLoaderProxy.GetInstance().LoadUiAssetAsync(type.Name, callback);
+        }
+
+        public void LoadingScene(string sceneName)
+        {
+            System.Type type = typeof(UI.LoadingCanvas);
+            if (m_loading == null)
+            {
+                ResourceLoaderProxy.GetInstance().LoadUiAssetAsync(type.Name, (success, go) =>
+                {
+                    if (success)
+                    {
+                        GameObject obj = GameObject.Instantiate<GameObject>(go);
+                        obj.transform.SetParent(m_loadingRootRect);
+                        SetUiCanvase(obj);
+                        m_loading = new UI.LoadingCanvas();
+                        m_loading.Initialization(obj);
+                        m_loading.SetLoadingScene(sceneName);
+                        m_loading.OnShow();
+                    }
+                    else
+                    {
+                        Debug.LogError("[UiManager] OpenCanvasUI LoadUiAsset Error.");
+                    }
+                });
+            }
+            else
+            {
+                m_loading.SetLoadingScene(sceneName);
+                m_loading.OnShow();
+            }
+        }
+
+        private void SetUiCanvase(GameObject go)
+        {
+            RectTransform rect = go.GetComponent<RectTransform>();
+            rect.anchorMax = Vector2.one;
+            rect.anchorMin = Vector2.zero;
+            rect.pivot = Vector2.one * 0.5f;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localScale = Vector3.one;
+            go.transform.localRotation = Quaternion.identity;
+            go.transform.SetAsLastSibling();
+        }
+
+        public void CloseLoadingScene()
+        {
+            if(m_loading != null)
+            {
+                m_loading.Dispose();
+            }
+            System.Type type = typeof(UI.LoadingCanvas);
+            string bundleName = $"ui/logic/{type.Name.ToLower()}";
+            ResourceLoaderProxy.GetInstance().UnloadAssetAsync(bundleName);
+        }
+
+        public void CloseCanvasUI<T>()
+        {
+            System.Type type = typeof(T);
+            if (m_canvasStack.TryGetValue(type, out UiBase ui))
+            {
+                ui.Dispose();
+            }
+            string bundleName = $"ui/logic/{type.Name.ToLower()}";
+            ResourceLoaderProxy.GetInstance().UnloadAssetAsync(bundleName);
         }
     }
 }

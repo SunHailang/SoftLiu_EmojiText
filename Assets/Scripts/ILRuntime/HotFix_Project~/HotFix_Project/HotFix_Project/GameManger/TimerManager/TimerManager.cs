@@ -31,6 +31,11 @@ namespace HotFix_Project
         }
 
 
+        public void Release()
+        {
+            this.Dispose();
+        }
+
         protected override void DisposeManagedResources()
         {
             IEnumerator<Timer.Timer> timers = m_timerLinkList.GetEnumerator();

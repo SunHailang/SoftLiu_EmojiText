@@ -44,6 +44,7 @@ namespace HotFix_Project.UI.UICore
         private bool m_isDispose = false;
         public void Dispose()
         {
+            UnityEngine.Debug.Log($"[UiComponent] Dispose {m_curGo.name}");
             Dispose(true);
         }
 

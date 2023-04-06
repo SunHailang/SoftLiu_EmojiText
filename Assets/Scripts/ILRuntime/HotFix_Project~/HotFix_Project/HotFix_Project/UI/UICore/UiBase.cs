@@ -12,7 +12,7 @@ namespace HotFix_Project.UI.UICore
             m_animation = m_curGo.GetComponent<Animation>();
         }
 
-
+          
         public virtual void OnShow(System.Action callback = null)
         {
 

@@ -4,6 +4,50 @@ using UnityEditor;
 
 public class PlayerBuildStep : IBuildStep
 {
+    [InitializeOnLoadMethod]
+    static void Init()
+    {
+        bool use = EditorPrefs.GetBool("EditorUseAssetBundleLoader", true);
+        Menu.SetChecked("HotFix/Editor Use AssetBundle Loader", use);
+        InitBuildSettingScene(use);
+    }
+
+    private static void InitBuildSettingScene(bool use)
+    {
+        HashSet<string> defaultScene = new HashSet<string>()
+        {
+            "GameLaunch.unity", "GameUpdate.unity", "GameEntry.unity"
+        };
+        EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes; 
+        foreach (var scene in scenes)
+        {
+            if (File.Exists(scene.path))
+            {
+                string sceneName = Path.GetFileName(scene.path);
+                if (use)
+                {
+                    scene.enabled = defaultScene.Contains(sceneName);
+                }
+                else
+                {
+                    scene.enabled = true;
+                }
+            }
+        }
+
+        // 这里重新赋值给 EditorBuildSettings.scenes ，否则设置失败！
+        EditorBuildSettings.scenes = scenes;
+    }
+
+    [MenuItem("HotFix/Editor Use AssetBundle Loader")]
+    public static void SetEditorUserAssetBundleLoader()
+    {
+        bool use = !Menu.GetChecked("HotFix/Editor Use AssetBundle Loader");
+        Menu.SetChecked("HotFix/Editor Use AssetBundle Loader", use);
+        EditorPrefs.SetBool("EditorUseAssetBundleLoader", use);
+        InitBuildSettingScene(use);
+    }
+
     public void Execute(BuildTarget target, BuildType type, string path)
     {
         string[] scenes = GetScenes();

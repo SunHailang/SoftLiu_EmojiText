@@ -11,9 +11,10 @@ namespace HotFix_Project.UI
 
         public override void Initialization(GameObject go)
         {
-            m_curGo = go;
-            m_btnStart = m_curGo.transform.Find("Content/StartButton").GetComponent<Button>();
+            base.Initialization(go);
 
+            m_btnStart = m_curGo.transform.Find("Content/StartButton").GetComponent<Button>();
+            m_btnStart.onClick.AddListener(BtnStart_OnClick);
         }
 
         public override void OnShow(Action callback = null)
@@ -25,5 +26,14 @@ namespace HotFix_Project.UI
         {
             base.OnClose(callback);
         }
+        #region Event Callback
+        private void BtnStart_OnClick()
+        {
+            UnityEngine.Debug.Log($"[LoginCanvas] Start Click.");
+            UIManager.Instance.LoadingScene("Scene_1");
+            UIManager.Instance.CloseCanvasUI<LoginCanvas>();
+        }
+
+        #endregion
     }
 }

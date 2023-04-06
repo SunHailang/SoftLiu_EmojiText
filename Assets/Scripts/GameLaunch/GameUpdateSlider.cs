@@ -10,6 +10,7 @@ public class GameUpdateSlider : MonoBehaviour
     [SerializeField] private Text m_progressText = null;
     [SerializeField] private Text m_latestVersionText = null;
 
+    public float CurValue => m_slider.value;
 
     public event Action ComplateCallback = null;
     

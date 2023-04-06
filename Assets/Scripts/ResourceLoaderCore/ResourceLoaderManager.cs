@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.U2D;
 
-namespace HotFix_Project.ResourceLoaderCore
+namespace ResourceLoaderCore
 {
     public abstract class ResourceLoaderManager : IDisposable
     {
@@ -15,6 +16,7 @@ namespace HotFix_Project.ResourceLoaderCore
         private AssetBundleManifest m_assetBundleManifest = null;
 
         private readonly Dictionary<string, AsyncAssetHandler> m_assetbundleLoadDict = new Dictionary<string, AsyncAssetHandler>();
+
         /// <summary>
         /// 校验 加载、卸载 AssetBundle时候可能会存在循环依赖
         /// </summary>
@@ -24,7 +26,7 @@ namespace HotFix_Project.ResourceLoaderCore
         {
             m_curKeyID = KeyID;
             // 初始化对象池
-            ObjectPoolManager.Instance.InitPool<AsyncAssetHandler>(20);
+            //ObjectPoolManager.Instance.InitPool<AsyncAssetHandler>(20);
             Debug.Log("1");
             m_rootPath = Path.Combine(GameConfigData.GetPlatformResRootPath(), "AssetBundle");
             Debug.Log($"2: {m_rootPath}");
@@ -35,7 +37,7 @@ namespace HotFix_Project.ResourceLoaderCore
             Debug.Log($"4: {assetBundle == null}");
             m_assetBundleManifest = assetBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
             Debug.Log($"5: {m_assetBundleManifest == null}");
-            AsyncAssetHandler handle = ObjectPoolManager.Instance.GetPoolObject<AsyncAssetHandler>() as AsyncAssetHandler;
+            AsyncAssetHandler handle = new AsyncAssetHandler(); // ObjectPoolManager.Instance.GetPoolObject<AsyncAssetHandler>() as AsyncAssetHandler;
             Debug.Log($"6: {handle == null}");
             handle.Reset();
             handle.Count++;
@@ -49,9 +51,27 @@ namespace HotFix_Project.ResourceLoaderCore
             return m_curKeyID;
         }
 
-        public abstract void LoadUiAssetAsync<T>(string assetName, System.Action<bool, T> callback) where T : UnityEngine.Object;
+        public abstract void LoadUiAssetAsync(string assetName, System.Action<bool, GameObject> callback);
+        public abstract void LoadUiAssetAsync(string assetName, System.Action<bool, SpriteAtlas> callback);
+        public abstract System.Collections.IEnumerator LoadSceneAssetAsync(string sceneName, System.Action<bool> callback);
+        
+        
+        protected System.Collections.IEnumerator LoadAssetAsync(string bundleName, System.Action<bool> callback)
+        {
+            Debug.Log($"[LoadAssetAsync] : {bundleName}");
+            m_checkBundleCycleDependencies.Clear();
+            yield return LoadAssetDependencieAsync(bundleName);
+            m_checkBundleCycleDependencies.Clear();
 
-        public abstract void LoadSceneAssetAsync(string sceneName, System.Action<bool> callback);
+            if (m_assetbundleLoadDict.TryGetValue(bundleName, out AsyncAssetHandler assetHandler) && assetHandler != null && !assetHandler.IsNull())
+            {
+                callback?.Invoke(true);
+            }
+            else
+            {
+                callback?.Invoke(false);
+            }
+        }
 
         protected System.Collections.IEnumerator LoadAssetAsync<T>(string bundleName, string name, System.Action<bool, T> callback) where T : UnityEngine.Object
         {
@@ -59,7 +79,7 @@ namespace HotFix_Project.ResourceLoaderCore
             m_checkBundleCycleDependencies.Clear();
             yield return LoadAssetDependencieAsync(bundleName);
             m_checkBundleCycleDependencies.Clear();
-            
+
             if (m_assetbundleLoadDict.TryGetValue(bundleName, out AsyncAssetHandler assetHandler) && assetHandler != null && !assetHandler.IsNull())
             {
                 // 加载 Bundle内的GameObject
@@ -67,7 +87,7 @@ namespace HotFix_Project.ResourceLoaderCore
                 yield return assetRequest;
                 var assetObj = assetRequest.asset;
                 T obj = assetObj as T;
-                
+
                 if (obj != null)
                 {
                     callback?.Invoke(true, obj);
@@ -111,8 +131,9 @@ namespace HotFix_Project.ResourceLoaderCore
                 {
                     if (assetHandler == null)
                     {
-                        assetHandler = ObjectPoolManager.Instance.GetPoolObject<AsyncAssetHandler>() as AsyncAssetHandler;
+                        assetHandler = new AsyncAssetHandler(); //ObjectPoolManager.Instance.GetPoolObject<AsyncAssetHandler>() as AsyncAssetHandler;
                     }
+
                     assetHandler.Reset();
                     assetHandler.Count++;
                     assetHandler.AssetBundleName = bundleName;
@@ -131,7 +152,6 @@ namespace HotFix_Project.ResourceLoaderCore
             {
                 assetHandler.Count++;
             }
-            
         }
 
         public System.Collections.IEnumerator UnloadAssetAsync(string bundleName)
@@ -149,13 +169,14 @@ namespace HotFix_Project.ResourceLoaderCore
                 // AB包存在循环引用
                 yield break;
             }
+
             if (m_assetbundleLoadDict.TryGetValue(bundleName, out AsyncAssetHandler assetHandler))
             {
                 if (assetHandler != null)
                 {
                     if (assetHandler.IsNull())
                     {
-                        ObjectPoolManager.Instance.RecycleObjectPool<AsyncAssetHandler>(assetHandler);
+                        //ObjectPoolManager.Instance.RecycleObjectPool<AsyncAssetHandler>(assetHandler);
                     }
                     else
                     {
@@ -164,8 +185,8 @@ namespace HotFix_Project.ResourceLoaderCore
                         {
                             // 卸载当前的 assetbundle
                             yield return assetHandler.AssetBundleData.UnloadAsync(true);
-                            assetHandler.Dispose();
-                            ObjectPoolManager.Instance.RecycleObjectPool<AsyncAssetHandler>(assetHandler);
+                            //assetHandler.Dispose();
+                            //ObjectPoolManager.Instance.RecycleObjectPool<AsyncAssetHandler>(assetHandler);
                             m_assetbundleLoadDict.Remove(bundleName);
                         }
                     }
@@ -175,6 +196,7 @@ namespace HotFix_Project.ResourceLoaderCore
                     m_assetbundleLoadDict.Remove(bundleName);
                 }
             }
+
             // 获取依赖
             string[] dependencies = m_assetBundleManifest.GetAllDependencies(bundleName);
             for (int i = 0; i < dependencies.Length; i++)
@@ -194,7 +216,6 @@ namespace HotFix_Project.ResourceLoaderCore
 
         public void Dispose()
         {
-
         }
     }
 }

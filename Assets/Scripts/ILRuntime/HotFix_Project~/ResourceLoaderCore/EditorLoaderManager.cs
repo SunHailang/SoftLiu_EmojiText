@@ -11,9 +11,9 @@ namespace HotFix_Project.ResourceLoaderCore
 
         }
 
-        public override void LoadSceneAssetAsync(string sceneName, Action<bool> callback)
+        public override System.Collections.IEnumerator LoadSceneAssetAsync<T>(string sceneName, Action<bool, T> callback)
         {
-           
+            yield return LoadAssetAsync<T>("", sceneName, callback);
         }
 
         public override void LoadUiAssetAsync<T>(string assetName, System.Action<bool, T> callback)
