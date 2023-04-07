@@ -66,7 +66,7 @@ namespace HotFix_Project.UI
             Debug.Log($"[LoadingCanvas]  LoadingScene Success: {value}");
             while (value < 1.0f)
             {
-                value += Time.deltaTime * 0.005f;
+                value += Time.deltaTime * 0.05f;
                 SetSliderValue(value);
                 if(value > 0.95f)
                 {

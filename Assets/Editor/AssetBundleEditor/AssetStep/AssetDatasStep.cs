@@ -9,6 +9,7 @@ namespace AssetBundleEditor
     {
         public void Execute(BuildTarget buildTarget, string output)
         {
+            
         }
 
         public BuildStepType GetBuildType()

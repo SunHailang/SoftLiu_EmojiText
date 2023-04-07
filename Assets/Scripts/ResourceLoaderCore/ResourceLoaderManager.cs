@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.U2D;
 
 namespace ResourceLoaderCore
@@ -44,6 +45,16 @@ namespace ResourceLoaderCore
             handle.AssetBundleName = m_assetBundleMainName;
             handle.AssetBundleData = assetBundle;
             m_assetbundleLoadDict[handle.AssetBundleName] = handle;
+            
+            // string shaderPath = Path.Combine(m_rootPath, "shaders");
+            // AssetBundle shaderBundle = AssetBundle.LoadFromMemory(File.ReadAllBytes(shaderPath));
+            // AsyncAssetHandler shaderHandle = new AsyncAssetHandler(); // ObjectPoolManager.Instance.GetPoolObject<AsyncAssetHandler>() as AsyncAssetHandler;
+            // Debug.Log($"6: {shaderHandle == null}");
+            // shaderHandle.Reset();
+            // shaderHandle.Count++;
+            // shaderHandle.AssetBundleName = "shaders";
+            // shaderHandle.AssetBundleData = shaderBundle;
+            // m_assetbundleLoadDict[shaderHandle.AssetBundleName] = shaderHandle;
         }
 
         public string GetResourceKeyID()
@@ -124,9 +135,27 @@ namespace ResourceLoaderCore
             {
                 string filePath = Path.Combine(m_rootPath, bundleName);
                 Debug.Log($"LoadAssetDependencieAsync : {bundleName}, {filePath}");
-                AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(filePath);
-                yield return request;
-                var assetData = request.assetBundle;
+                string ex = Path.GetExtension(filePath);
+                AssetBundle assetData = null;
+                if (ex == ".unity3d")
+                {
+                    string url = "";
+                    #if UNITY_EDITOR
+                    url = $"file://{filePath}";
+                    #elif UNITY_ANDROID
+                    url = $"jar:file:///{filePath}";
+                    #endif
+                    UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(url);
+                    yield return request.SendWebRequest();
+                    assetData = DownloadHandlerAssetBundle.GetContent(request);
+                }
+                else
+                {
+                    AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(filePath);
+                    yield return request;
+                    assetData = request.assetBundle;
+                }
+
                 if (assetData != null)
                 {
                     if (assetHandler == null)

@@ -45,6 +45,8 @@ namespace AssetBundleEditor
         /// <param name="isClear"></param>
         public static void AssetLabelUpdate(bool isClear, HashSet<string> assetLabelList = null, string output = null)
         {
+            // 设置场景 Shaders
+            SetShadersAssetLabel(isClear, assetLabelList);
             // 设置UI逻辑资源
             SetUiLogicAssetLabel(isClear, assetLabelList);
             // 设置字体
@@ -61,6 +63,14 @@ namespace AssetBundleEditor
             }
 
             AssetDatabase.Refresh();
+        }
+
+        private static void SetShadersAssetLabel(bool isClear, HashSet<string> assetLabelList)
+        {
+            DirectoryInfo shaderswDir = new DirectoryInfo($"{m_assetbundlePackageRootPath}/Shaders");
+            FileInfo[] shaders = shaderswDir.GetFiles("*", SearchOption.AllDirectories);
+            string shadersAssetName = isClear ? "" : "shaders";
+            SetAssetLabel(shaders, shadersAssetName, assetLabelList);
         }
 
         /// <summary>
