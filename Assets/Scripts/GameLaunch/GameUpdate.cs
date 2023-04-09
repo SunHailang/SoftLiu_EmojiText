@@ -67,8 +67,6 @@ public class GameUpdate : MonoBehaviour
                         int index = assetInfo.Path.IndexOf(dirName, StringComparison.Ordinal);
                         string file = assetInfo.Path.Substring(index);
                         m_updateFile.Add(new KeyValuePair<string, int>(file, assetInfo.Size));
-                        //yield return WebRequestManager.Instance.CreateDownloadFileRequest(file, persistentDataPath);
-                        yield return null;
                     }
                     assetMd5Dict.Remove(assetInfo.Path);
                 }
@@ -77,12 +75,11 @@ public class GameUpdate : MonoBehaviour
                     int index = assetInfo.Path.IndexOf(dirName, StringComparison.Ordinal);
                     string file = assetInfo.Path.Substring(index);
                     m_updateFile.Add(new KeyValuePair<string, int>(file, assetInfo.Size));
-                    //yield return WebRequestManager.Instance.CreateDownloadFileRequest(file, persistentDataPath);
-                    yield return null;
                 }
 
-                latestProcess += assetServerMD5Count;
+                latestProcess += perProcess;
                 m_updateSlider.SetSliderProgress(latestProcess / 100.0f);
+                yield return null;
             }
 
             if (assetMd5Dict.Count > 0)
@@ -118,13 +115,14 @@ public class GameUpdate : MonoBehaviour
         // 文件对比
         m_curResVersionText.text = $"当前资源版本号：{VersionUtilities.GetResVersion(resServerData.Version)}";
         // 对差异化的文件进行下载
+        yield return EndProgress(0.9f, 1.0f);
         // 下载完成 
         yield return null;
         GC.Collect();
         // 加载ILRuntime
         yield return HotFixMgr.Instance.LoadHotFixAssembly();
 
-        yield return EndProgress();
+        yield return EndProgress(1.0f, 1.0f);
     }
 
     private System.Collections.IEnumerator LoadAssetDependencieAsync(string bundleName, AssetBundleManifest assetBundleManifest)
@@ -158,17 +156,17 @@ public class GameUpdate : MonoBehaviour
         }
     }
 
-    private IEnumerator EndProgress()
+    private IEnumerator EndProgress(float end, float time)
     {
         float value = m_updateSlider.CurValue;
-        while (value < 1f)
+        float slope = (end - value) / time;
+        while (value <= end)
         {
+            value += slope * Time.deltaTime;
             yield return null;
-            value += Time.deltaTime * 0.05f;
             m_updateSlider.SetSliderProgress(value);
         }
-
-        m_updateSlider.SetSliderProgress(1.0f);
+        m_updateSlider.SetSliderProgress(end);
     }
 
     public void Btn_OnClick()

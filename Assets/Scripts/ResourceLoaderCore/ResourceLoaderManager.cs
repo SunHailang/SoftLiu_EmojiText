@@ -135,26 +135,15 @@ namespace ResourceLoaderCore
             {
                 string filePath = Path.Combine(m_rootPath, bundleName);
                 Debug.Log($"LoadAssetDependencieAsync : {bundleName}, {filePath}");
-                string ex = Path.GetExtension(filePath);
-                AssetBundle assetData = null;
-                if (ex == ".unity3d")
-                {
-                    string url = "";
-                    #if UNITY_EDITOR
-                    url = $"file://{filePath}";
-                    #elif UNITY_ANDROID
-                    url = $"jar:file:///{filePath}";
-                    #endif
-                    UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(url);
-                    yield return request.SendWebRequest();
-                    assetData = DownloadHandlerAssetBundle.GetContent(request);
-                }
-                else
-                {
-                    AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(filePath);
-                    yield return request;
-                    assetData = request.assetBundle;
-                }
+                string url = "";
+#if UNITY_EDITOR
+                url = $"file://{filePath}";
+#elif UNITY_ANDROID
+                url = $"jar:file:///{filePath}";
+#endif
+                UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(url);
+                yield return request.SendWebRequest();
+                AssetBundle assetData = DownloadHandlerAssetBundle.GetContent(request);
 
                 if (assetData != null)
                 {
