@@ -4,13 +4,57 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
+public class BuildInfoData
+{
+    public string BuildOutputPath { get; private set; }
+
+    public void SetBuildOutputPath(string path)
+    {
+        BuildOutputPath = path;
+        EditorPrefs.SetString("OutputPath", BuildOutputPath);
+    }
+    public BuildTargetGroup BuildTarget { get; private set; } = BuildTargetGroup.Standalone;
+
+    public void SetBuildTarget(BuildTargetGroup target)
+    {
+        BuildTarget = target;
+    }
+    public BuildType BuildType{ get; private set; } = BuildType.Development;
+
+    public void SetBuildType(BuildType type)
+    {
+        BuildType = type;
+    }
+    public bool ExportAndroidProject{ get; private set; } = false;
+
+    public void SetExportAndroidProject(bool isExport)
+    {
+        ExportAndroidProject = isExport;
+    }
+}
+
 public static class BuildProcess
 {
+
+    public static readonly BuildInfoData BuildInfoData;
+    
     private static readonly List<IBuildStep> m_steps;
 
     static BuildProcess()
     {
+        BuildInfoData = new BuildInfoData();
+        string output = EditorPrefs.GetString("OutputPath", "");
+        if (string.IsNullOrEmpty(output))
+        {
+            output = Path.Combine(Application.dataPath, "../Builds/");
+            output = Path.GetFullPath(output).Replace('\\', '/');
+            EditorPrefs.SetString("OutputPath", output);
+        }
+        BuildInfoData.SetBuildOutputPath(output);
+        
         m_steps = new List<IBuildStep>();
+        m_steps.Add(new PlatformStep());
+        
         m_steps.Add(new PerBuildStep());
         m_steps.Add(new PlayerBuildStep());
     }
@@ -31,7 +75,7 @@ public static class BuildProcess
 
     private static string GetBuildPath(BuildTarget target, BuildType type)
     {
-        string path = Path.Combine(Application.dataPath, $"../Builds/{target}/{type}/");
+        string path = Path.Combine(BuildInfoData.BuildOutputPath, $"{target}/{type}/");
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);

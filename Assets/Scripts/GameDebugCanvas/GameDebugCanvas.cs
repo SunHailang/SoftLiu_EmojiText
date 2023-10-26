@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class GameDebugCanvas : MonoBehaviour
 {
+    [SerializeField] private Text m_fpsText = null;
     [SerializeField] private GameObject m_curScrollViewGo = null;
     [SerializeField] private RectTransform m_curScrollViewRect = null;
     [SerializeField] private RectTransform m_curTextRect = null;
@@ -34,8 +35,21 @@ public class GameDebugCanvas : MonoBehaviour
         m_closeBtnLog.onClick.AddListener(Close_OnClick);
         btnLog_OnClick();
     }
-    
-    
+
+    private float m_fpsTime = 0;
+    private int m_fpsCount = 0;
+    private void Update()
+    {
+        m_fpsTime += Time.deltaTime;
+        m_fpsCount++;
+        if (m_fpsTime >= 1.0f)
+        {
+            m_fpsTime = 0;
+            m_fpsText.text = $"FPS: {m_fpsCount}";
+            m_fpsCount = 0;
+        }
+    }
+
     private void logCallback(string condition, string stackTrace, LogType type)
     {
         if (string.IsNullOrEmpty(condition)) return;

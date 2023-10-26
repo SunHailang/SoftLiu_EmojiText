@@ -7,6 +7,7 @@ SpriteAtlas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LoadingCanvas
+  serializedVersion: 2
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -84,8 +85,6 @@ SpriteAtlas:
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
-    packedSpriteRenderDataKeys:
-    - 2be7212b72a76bb4db135118b59c3824: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 2be7212b72a76bb4db135118b59c3824, type: 3}
@@ -94,3 +93,4 @@ SpriteAtlas:
   m_RenderDataMap: {}
   m_Tag: LoadingCanvas
   m_IsVariant: 0
+  m_IsPlaceholder: 0

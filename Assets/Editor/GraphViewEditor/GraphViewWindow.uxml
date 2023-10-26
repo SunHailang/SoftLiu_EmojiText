@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<engine:UXML
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:engine="UnityEngine.UIElements"
+        xmlns:editor="UnityEditor.UIElements" xmlns:ui="UnityEditor.UIElements"
+        xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
+        xsi:schemaLocation="UnityEditor.UIElements file:///E:/StudyGit/SoftLiu_EmojiText/UIElementsSchema/UnityEditor.UIElements.xsd">
+    <ui:Toolbar style="height: 20px; width: 100%;">
+        <engine:Button name="btnToolbar_1" text="Hello" style="width: 45px; height: auto;"/>
+    </ui:Toolbar>
+    <engine:VisualElement style="height: 100%; width: 100%; flex-direction: row;">
+        <engine:VisualElement style="height: 100%; width: 30%;" class="GroupView">
+            <engine:Label text="Inspector" class="GroupViewLabel"/>
+            <engine:ScrollView style="height: 100%; width: 100%;" >
+                <InspectorGraphView name="InspectorGraphView" style="height: 100%; width: 100%" />
+            </engine:ScrollView>
+        </engine:VisualElement>        
+        <engine:VisualElement style="height: 100%; width: 70%" class="GroupView">
+            <engine:Label text="Scene" class="GroupViewLabel"/>
+            <SceneGraphView style="width: 100%; height: 100%"/>
+        </engine:VisualElement>
+    </engine:VisualElement>
+
+
+</engine:UXML>

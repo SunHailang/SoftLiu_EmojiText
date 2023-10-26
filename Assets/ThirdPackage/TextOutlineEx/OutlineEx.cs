@@ -41,7 +41,7 @@ namespace TooSimpleFramework.UI
         protected override void OnValidate()
         {
             base.OnValidate();
-            if (base.graphic.material != null)
+            if (base.graphic != null && base.graphic.material != null)
             {
                 this._Refresh();
             }

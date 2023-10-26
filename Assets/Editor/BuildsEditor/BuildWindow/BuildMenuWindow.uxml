@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="UnityEngine.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" schemaLocation="UnityEngine.UIElements ../UIElementsSchema/UnityEngine.UIElements.xsd" editor-extension-mode="False">
+    <ui:Label text="Select something to remove from your suitcase:" style="position: absolute; top: 0; height: 30px; font-size: 18px; margin-left: 4px; margin-top: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; width: 100%;" />
+    <ui:Box name="PathBox" style="height: 55px; align-items: flex-end; flex-direction: row; width: 100%; justify-content: space-between; position: absolute; top: 30px; transform-origin: left top; margin-bottom: 1px;">
+        <ui:TextField picking-mode="Ignore" label="Build输出路径：" value="filler text" name="OutputPath" style="flex-direction: column; width: 782px; justify-content: flex-end; align-items: stretch; height: 55px; font-size: 18px; margin-top: 0; margin-bottom: 0; margin-left: 0; margin-right: 0; transform-origin: left top; scale: 1 1;" />
+        <ui:Button text="..." display-tooltip-when-elided="true" name="SelecOutPath" style="white-space: nowrap; flex-wrap: wrap-reverse; flex-direction: row-reverse; -unity-text-align: middle-center; width: 50px; margin-top: 0; margin-bottom: 0; margin-right: 0; margin-left: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; height: 28px; font-size: 18px; -unity-font-style: bold; -unity-paragraph-spacing: 0;" />
+    </ui:Box>
+    <ui:VisualElement name="BuildVisualElement" style="flex-direction: row; align-items: center; justify-content: flex-start; position: absolute; top: 85px; height: 90px; font-size: 16px; -unity-text-align: middle-left;">
+        <ui:RadioButtonGroup value="0" focusable="true" tabindex="0" name="BuildPlatform" style="height: 100%; flex-direction: column; justify-content: flex-end; align-self: stretch; width: 190px; align-items: flex-start; margin-left: 4px; margin-right: 0; margin-top: 0; margin-bottom: 0; -unity-text-align: middle-left; top: 0; right: 0;">
+            <ui:RadioButton label="Windows" name="Windows" style="flex-direction: row-reverse;" />
+            <ui:RadioButton label="Android" name="Android" tabindex="1" style="flex-direction: row-reverse;" />
+            <ui:RadioButton label="iOS" name="iOS" tabindex="2" style="flex-direction: row-reverse;" />
+        </ui:RadioButtonGroup>
+        <ui:RadioButtonGroup value="0" focusable="true" tabindex="0" name="BuildType" style="height: 100%; flex-direction: column; justify-content: flex-end; align-self: stretch; width: 190px; align-items: flex-start; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; -unity-text-align: middle-left; position: absolute; top: 0; right: -180px;">
+            <ui:RadioButton label="Dev" name="Dev" style="flex-direction: row-reverse;" />
+            <ui:RadioButton label="Per" name="Per" tabindex="1" style="flex-direction: row-reverse;" />
+            <ui:RadioButton label="Pro" name="Pro" tabindex="2" style="flex-direction: row-reverse;" />
+        </ui:RadioButtonGroup>
+        <ui:Toggle label="导出Android工程" name="ExportAndroidProject" style="flex-direction: row-reverse; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; font-size: 16px; -unity-text-align: middle-left; flex-wrap: wrap; align-items: center; justify-content: center; transform-origin: center; position: absolute; right: -360px; top: 50%;" />
+    </ui:VisualElement>
+    <ui:Box name="BuildBox" style="flex-direction: row; align-items: flex-start; justify-content: space-around; position: absolute; top: 200px; width: 100%;">
+        <ui:Button name="build" text="OK" style="width: 100%; -unity-text-align: middle-center; white-space: normal; flex-direction: column-reverse; flex-wrap: wrap; align-items: center; justify-content: center;" />
+    </ui:Box>
+</ui:UXML>

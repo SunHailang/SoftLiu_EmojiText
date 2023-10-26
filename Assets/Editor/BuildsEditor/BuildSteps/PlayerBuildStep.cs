@@ -1,13 +1,19 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEngine;
 
+[InitializeOnLoad]
 public class PlayerBuildStep : IBuildStep
 {
-    [InitializeOnLoadMethod]
-    static void Init()
+    static PlayerBuildStep()
     {
-        bool use = EditorPrefs.GetBool("EditorUseAssetBundleLoader", true);
+        EditorApplication.delayCall += _Init;
+    }
+
+    private static void _Init()
+    {
+        bool use = SessionState.GetBool("EditorUseAssetBundleLoader", true);
         Menu.SetChecked("HotFix/Editor Use AssetBundle Loader", use);
         InitBuildSettingScene(use);
     }
@@ -18,7 +24,7 @@ public class PlayerBuildStep : IBuildStep
         {
             "GameLaunch.unity", "GameUpdate.unity", "GameEntry.unity"
         };
-        EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes; 
+        EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
         foreach (var scene in scenes)
         {
             if (File.Exists(scene.path))
@@ -35,6 +41,7 @@ public class PlayerBuildStep : IBuildStep
             }
         }
 
+        Debug.Log($"PlayerBuildStep InitBuildSettingScene : {use}");
         // 这里重新赋值给 EditorBuildSettings.scenes ，否则设置失败！
         EditorBuildSettings.scenes = scenes;
     }
@@ -44,7 +51,7 @@ public class PlayerBuildStep : IBuildStep
     {
         bool use = !Menu.GetChecked("HotFix/Editor Use AssetBundle Loader");
         Menu.SetChecked("HotFix/Editor Use AssetBundle Loader", use);
-        EditorPrefs.SetBool("EditorUseAssetBundleLoader", use);
+        SessionState.SetBool("EditorUseAssetBundleLoader", use);
         InitBuildSettingScene(use);
     }
 
@@ -53,7 +60,6 @@ public class PlayerBuildStep : IBuildStep
         string[] scenes = GetScenes();
         BuildOptions options = GetOptions(target);
 
-#if SINGLE_APK
         switch (target)
         {
             case BuildTarget.Android:
@@ -66,7 +72,6 @@ public class PlayerBuildStep : IBuildStep
                 path = Path.Combine(path, "build.exe");
                 break;
         }
-#endif
 
         BuildPipeline.BuildPlayer(scenes, path, target, options);
     }
