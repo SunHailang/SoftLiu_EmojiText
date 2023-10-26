@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<engine:UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:engine="UnityEngine.UIElements"
+    xmlns:editor="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
+>
+    <engine:VisualElement name="ShaderVariantsEditor" >
+        <engine:TextField picking-mode="Ignore" label="文件保存路径" name="CollectOutput" style="height: 22px;" />
+        <engine:VisualElement name="PackageContainer" style="height: 24px;" />
+        <engine:Label text="Current Shader Count" display-tooltip-when-elided="true" name="CurrentShaderCount" style="height: 20px; padding-left: 4px;" />
+        <engine:Label text="Current Variant Count" display-tooltip-when-elided="true" name="CurrentVariantCount" style="height: 20px; padding-left: 4px;" />
+        <engine:SliderInt picking-mode="Ignore" label="Capacity" value="9999" high-value="1000" name="ProcessCapacity" low-value="10" show-input-field="true" />
+        <engine:Button text="开始搜集" display-tooltip-when-elided="true" name="CollectButton" style="height: 50px; background-color: rgb(40, 106, 42); margin-top: 10px;" />
+    </engine:VisualElement>
+
+</engine:UXML>
